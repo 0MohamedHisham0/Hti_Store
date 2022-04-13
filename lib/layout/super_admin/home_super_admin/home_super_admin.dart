@@ -5,10 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hti_store/layout/super_admin/home_super_admin/cubit/cubit.dart';
 import 'package:hti_store/layout/super_admin/home_super_admin/cubit/states.dart';
-import 'package:hti_store/layout/super_admin/search_users_screen/search_users_screen.dart';
-import 'package:hti_store/layout/super_admin/user_profile_screen/user_profile_screen.dart';
 import 'package:hti_store/shared/components/components.dart';
 import 'package:hti_store/shared/styles/colors.dart';
+
+import '../../../modules/super_admin/search_users_screen/search_users_screen.dart';
+import '../../../modules/super_admin/user_profile_screen/user_profile_screen.dart';
 
 class HomeSuperAdmin extends StatelessWidget {
   const HomeSuperAdmin({Key? key}) : super(key: key);
