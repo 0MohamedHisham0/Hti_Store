@@ -1,3 +1,5 @@
+import 'package:hti_store/models/login_model.dart';
+
 abstract class LoginStates {}
 
 class LoginInitialState extends LoginStates {}
@@ -6,7 +8,7 @@ class LoginLoadingState extends LoginStates {}
 
 class LoginSuccessState extends LoginStates
 {
-  final LoginStates loginModel;
+  final LoginModel loginModel;
 
   LoginSuccessState(this.loginModel);
 }

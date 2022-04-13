@@ -18,7 +18,7 @@ Widget defaultButton({
       height: 50.0,
       child: ElevatedButton(
         onPressed: () {
-          function;
+          function();
         },
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
@@ -55,7 +55,7 @@ Widget defaultFormField({
   Function? onChange,
   Function? onTap,
   bool isPassword = false,
-  required Function validate,
+  required FormFieldValidator validate,
   required String label,
   required IconData prefix,
   IconData? suffix,
@@ -76,9 +76,7 @@ Widget defaultFormField({
       onTap: () {
         onTap!();
       },
-      validator: (value) {
-        validate(value);
-      },
+      validator: validate,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(
@@ -99,11 +97,10 @@ Widget defaultFormField({
     );
 
 Widget myDivider() => Container(
-  width: double.infinity,
-  height: 1.0,
-  color: Colors.grey[300],
-);
-
+      width: double.infinity,
+      height: 1.0,
+      color: Colors.grey[300],
+    );
 
 void navigateTo(context, widget) => Navigator.push(
       context,
@@ -344,3 +341,51 @@ Widget buttonDownMenu2(
         scrollbarAlwaysShow: true,
       ),
     ));
+
+// enum
+enum RoleStates {
+  ADMIN,
+  SUPPLIERS,
+  ADDITIONOFFICIAL,
+  STOREKEPPER,
+  SUPERVISORYOFFICER,
+  STOREMANAGER,
+  SECTION,
+  USER,
+  DEFAULT
+}
+
+String translateRoleStates(RoleStates state) {
+  String roleInArabic;
+
+  switch (state) {
+    case RoleStates.ADMIN:
+      roleInArabic = "المسؤولين";
+      break;
+    case RoleStates.SUPPLIERS:
+      roleInArabic = "الموردين";
+      break;
+    case RoleStates.ADDITIONOFFICIAL:
+      roleInArabic = "المسؤولين الإضافيين";
+      break;
+    case RoleStates.STOREKEPPER:
+      roleInArabic = "امناء المخازن";
+      break;
+    case RoleStates.SUPERVISORYOFFICER:
+      roleInArabic = "مسؤولين الرقابه";
+      break;
+    case RoleStates.STOREMANAGER:
+      roleInArabic = "مديرين المخازن";
+      break;
+    case RoleStates.SECTION:
+      roleInArabic = "الأقسام";
+      break;
+    case RoleStates.USER:
+      roleInArabic = "المستخدمين";
+      break;
+    case RoleStates.DEFAULT:
+      roleInArabic = "لم يتم تحديد وظيفه له";
+      break;
+  }
+  return roleInArabic;
+}

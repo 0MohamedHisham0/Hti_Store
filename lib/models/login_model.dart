@@ -1,12 +1,14 @@
 class LoginModel {
   bool? status;
   String? message;
+  String? token;
   UserData? data;
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
+    token = json['token'];
     message = json['message'];
-    data = (json['data'] != null ? UserData.fromJson(json['data']) : null)!;
+    data = json['data'] != null ? UserData.fromJson(json['data']) : null;
   }
 }
 
@@ -18,15 +20,7 @@ class LoginModel {
   String? sections;
   String? branch;
 
-  // named constructor
-  UserData() {
-    id = id;
-    username = username;
-    email = email;
-    roles = email;
-    sections = email;
-    branch = email;
-  }
+
   // named constructor
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

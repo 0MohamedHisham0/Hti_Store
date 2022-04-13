@@ -1,3 +1,5 @@
+import 'package:hti_store/models/list_user_model.dart';
+
 abstract class HomeSuperUserStates {}
 
 class HomeSuperUserInitialState extends HomeSuperUserStates {}
@@ -6,9 +8,9 @@ class HomeSuperUserLoadingState extends HomeSuperUserStates {}
 
 class HomeSuperUserSuccessState extends HomeSuperUserStates
 {
-  final HomeSuperUserStates UserModel;
+  final ListUsers listUsers;
 
-  HomeSuperUserSuccessState(this.UserModel);
+  HomeSuperUserSuccessState(this.listUsers);
 }
 
 class HomeSuperUserErrorState extends HomeSuperUserStates

@@ -5,6 +5,9 @@ import 'package:hti_store/modules/login/cubit/cubit.dart';
 import 'package:hti_store/modules/login/cubit/states.dart';
 import 'package:hti_store/shared/components/components.dart';
 
+import '../../layout/super_admin/home_super_admin/home_super_admin.dart';
+import '../../shared/network/local/cache_helper.dart';
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   var formKey = GlobalKey<FormState>();
@@ -19,27 +22,22 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            //             // if (state.loginModel.status) {
-            //             //   print(state.loginModel.message);
-            //             //   print(state.loginModel.data.token);
-            //             //
-            //             //   CacheHelper.saveData(
-            //             //     key: 'token',
-            //             //     value: state.loginModel.data.token,
-            //             //   ).then((value) {
-            //             //     navigateAndFinish(
-            //             //       context,
-            //             //       Layout(),
-            //             //     );
-            //             //   });
-            //             // } else {
-            //             //   print(state.loginModel.message);
-            //             //
-            //             //   showToast(
-            //             //     text: state.loginModel.message,
-            //             //     state: ToastStates.ERROR,
-            //             //   );
-            //             // }
+            CacheHelper.saveData(
+              key: 'token',
+              value: state.loginModel.token,
+            ).then((value) {
+              navigateAndFinish(
+                context,
+                HomeSuperUserScreen(),
+              );
+            });
+          }
+
+          if (state is LoginErrorState) {
+            showToast(
+              text: state.error,
+              state: ToastStates.ERROR,
+            );
           }
         },
         builder: (context, state) {
@@ -76,13 +74,13 @@ class LoginScreen extends StatelessWidget {
                         defaultFormField(
                             controller: emailController,
                             type: TextInputType.emailAddress,
-                            validate: (String value) {
+                            validate: (value) {
                               if (value.isEmpty) {
-                                return 'من فضلك ادخل البريد الإلكتروني';
+                                return 'الرجاء إدخال البريد الإلكتروني';
                               }
                             },
                             label:
-                                'البريد الإلكتروني او رقم الهاتف الموظف او الجهه',
+                                'البريد الإلكتروني',
                             prefix: Icons.email_outlined,
                             onChange: (value) {}),
                         const SizedBox(
@@ -91,13 +89,13 @@ class LoginScreen extends StatelessWidget {
                         defaultFormField(
                           controller: passwordController,
                           type: TextInputType.visiblePassword,
-                          suffix: LoginCubit.get(context).suffix,
+                          suffix: cubit.suffix,
                           onSubmit: (value) {
                             if (formKey.currentState!.validate()) {
-                              // cubit.userLogin(
-                              //   email: emailController.text,
-                              //   password: passwordController.text,
-                              // );
+                              cubit.userLogin(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
                             }
                           },
                           isPassword: cubit.isPassword,
@@ -105,12 +103,13 @@ class LoginScreen extends StatelessWidget {
                             cubit.changePasswordVisibility();
                             print("suffixPressed");
                           },
-                          validate: (String value) {
+                          validate: (value) {
                             if (value.isEmpty) {
-                              return 'الرقم السري قصير جدا';
+                              return 'الرجاء إدخال كلمة المرور';
                             }
+                            return null;
                           },
-                          label: 'الرقم السري',
+                          label: 'كلمة المرور',
                           prefix: Icons.lock_outline,
                           onChange: (value) {},
                         ),
@@ -122,10 +121,10 @@ class LoginScreen extends StatelessWidget {
                           builder: (context) => defaultButton(
                             function: () {
                               if (formKey.currentState!.validate()) {
-                                // cubit.userLogin(
-                                //   email: emailController.text,
-                                //   password: passwordController.text,
-                                // );
+                                cubit.userLogin(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
                               }
                             },
                             text: 'تسجيل الدخول',

@@ -23,7 +23,7 @@ Future<void> main() async {
 
   if (onBoarding != null) {
     if (token != null) {
-      widget = const HomeSuperAdmin();
+      widget = const HomeSuperUserScreen();
       print("HomeSuperAdmin");
     } else {
       widget = LoginScreen();
@@ -57,8 +57,8 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,
-      home: const Directionality(
-          textDirection: TextDirection.rtl, child: HomeSuperAdmin()),
+      home:  Directionality(
+          textDirection: TextDirection.rtl, child: startWidget!),
     );
   }
 }

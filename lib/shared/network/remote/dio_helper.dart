@@ -7,8 +7,12 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: '',
+        baseUrl: 'https://evening-basin-45405.herokuapp.com/',
         receiveDataWhenStatusError: true,
+        headers:
+        {
+          'Content-Type': 'application/json',
+        },
       ),
     );
   }
@@ -16,16 +20,16 @@ class DioHelper {
   static Future<Response> getData({
     required String url,
     required Map<String, dynamic> query,
-    String lang = 'ar',
     String? token,
   }) async {
     dio.options.headers = {
-      'Authorization': token,
+      'Authorization': "Bearer " + token!,
     };
 
     return await dio.get(
       url,
       queryParameters: query,
+
     );
   }
 
@@ -34,10 +38,8 @@ class DioHelper {
     Map<String, dynamic>? query,
     required Map<String, dynamic> data,
     String? token,
-  }) async
-  {
-    dio.options.headers =
-    {
+  }) async {
+    dio.options.headers = {
       'Authorization': token,
     };
 
