@@ -17,36 +17,92 @@ class DioHelper {
     );
   }
 
+  static Future<Response> get(String url, ) async {
+    return await dio.get(url);
+  }
+
   static Future<Response> getData({
     required String url,
-    required Map<String, dynamic> query,
     String? token,
-  }) async {
-    dio.options.headers = {
-      'Authorization': "Bearer " + token!,
-    };
-
-    return await dio.get(
+    Map<String, dynamic>? query,
+  }) {
+    if(token != null) {
+      token = "Bearer $token" ;
+    }
+    return dio.get(
       url,
+      options: Options(
+        headers: {
+          'lang':'en',
+          'Content-Type':'application/json',
+          'Authorization':token??'',
+        },
+      ),
       queryParameters: query,
-
     );
   }
 
   static Future<Response> postData({
-    required String url,
-    Map<String, dynamic>? query,
     required Map<String, dynamic> data,
+    required String url,
     String? token,
-  }) async {
-    dio.options.headers = {
-      'Authorization': token,
-    };
+  }) {
+    if(token != null) {
+      token = "Bearer $token" ;
+    }
 
     return dio.post(
       url,
-      queryParameters: query,
       data: data,
+      options: Options(
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':token??'',
+        },
+      ),
     );
   }
+
+
+  static Future<Response> patchData({
+    required Map<String, dynamic> data,
+    required String url,
+    String? token,
+  }) {
+    if(token != null) {
+      token = "Bearer $token" ;
+    }
+
+    return dio.patch(
+      url,
+      data: data,
+      options: Options(
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':token??'',
+        },
+      ),
+    );
+  }
+  static Future<Response> deleteData({
+    required String url,
+    String? token,
+  }) {
+    if(token != null) {
+      token = "Bearer $token" ;
+    }
+
+    return dio.delete(
+      url,
+      options: Options(
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':token??'',
+        },
+      ),
+    );
+  }
+
+
+
 }

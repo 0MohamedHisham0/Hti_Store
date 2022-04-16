@@ -78,6 +78,12 @@ class LoginScreen extends StatelessWidget {
                               if (value.isEmpty) {
                                 return 'الرجاء إدخال البريد الإلكتروني';
                               }
+                              if (!RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(value)) {
+                                return 'الرجاء إدخال بريد إلكتروني صحيح';
+                              }
+                              return null;
                             },
                             label:
                                 'البريد الإلكتروني',
@@ -92,6 +98,8 @@ class LoginScreen extends StatelessWidget {
                           suffix: cubit.suffix,
                           onSubmit: (value) {
                             if (formKey.currentState!.validate()) {
+                              print('${emailController.text} ====================');
+                              print(passwordController.text);
                               cubit.userLogin(
                                 email: emailController.text,
                                 password: passwordController.text,
@@ -106,6 +114,9 @@ class LoginScreen extends StatelessWidget {
                           validate: (value) {
                             if (value.isEmpty) {
                               return 'الرجاء إدخال كلمة المرور';
+                            }
+                            if(value.length < 6){
+                              return 'كلمة المرور قصيرة جدا';
                             }
                             return null;
                           },

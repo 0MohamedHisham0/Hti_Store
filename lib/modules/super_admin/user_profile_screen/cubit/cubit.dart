@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/layout/super_admin/home_super_admin/cubit/states.dart';
+import 'package:hti_store/models/delet_user_model.dart';
 import 'package:hti_store/models/login_model.dart';
 import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/states.dart';
 import 'package:hti_store/shared/network/end_points.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
 import 'package:hti_store/shared/network/remote/dio_helper.dart';
+
+import '../../../../shared/components/components.dart';
 
 class UserProfileCubit extends Cubit<UserProfileStates> {
   UserProfileCubit() : super(UserProfileInitialState());
@@ -12,6 +14,11 @@ class UserProfileCubit extends Cubit<UserProfileStates> {
   static UserProfileCubit get(context) => BlocProvider.of(context);
 
   UserData? userData;
+  DeleteUserModel? deleteUserModel;
+
+  var valueRole = getRoles()[0];
+  var valueBranch = getBranches()[0];
+  var valueSection = getSections()[0];
 
   void getUserByID(int id) {
     emit(UserProfileLoadingState());
@@ -37,5 +44,54 @@ class UserProfileCubit extends Cubit<UserProfileStates> {
       print(error.toString());
       emit(UserProfileErrorState(error.toString()));
     });
+  }
+
+  void updateUserRole({
+    required String? type,
+    required String? section,
+    required String? branch,
+  }) {
+    emit(UpdateUserRoleLoadingState());
+
+    DioHelper.patchData(
+      url: UPDATE_ROLE + "/" + userData!.id.toString(),
+      data: {"type": type, "section": section, "branch": branch},
+      token: CacheHelper.getData(key: "token"),
+    ).then((value) {
+      userData = UserData.fromJson(value.data);
+      emit(UpdateUserRoleSuccessState(userData!));
+    }).catchError((error) {
+      emit(UpdateUserRoleErrorState(error.toString()));
+    });
+  }
+
+  void deleteUser() {
+    emit(DeleteUserLoadingState());
+
+    DioHelper.deleteData(
+      url: DELETE_USER + "/" + userData!.id.toString(),
+      token: CacheHelper.getData(key: "token"),
+    ).then((value) {
+      deleteUserModel = DeleteUserModel.fromJson(value.data);
+      emit(DeleteUserSuccessState(deleteUserModel!));
+    }).catchError((error) {
+      emit(DeleteUserErrorState(error.toString()));
+    });
+  }
+
+  void changeRole(RoleStates value) {
+    valueRole = value;
+    emit(ChangeRoleState());
+    print(valueRole.name + "changed");
+  }
+
+  void changeBranch(BranchStates value) {
+    valueBranch = value;
+    emit(ChangeBranchState());
+  }
+
+  void changeSection(SectionStates value) {
+    valueSection = value;
+    emit(ChangeSectionState());
   }
 }

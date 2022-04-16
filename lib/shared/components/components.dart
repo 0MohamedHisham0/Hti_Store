@@ -1,9 +1,13 @@
+import 'package:bloc/bloc.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hti_store/modules/super_admin/add_new_user/cubit/cubit.dart';
+import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/cubit.dart';
 import 'package:hti_store/shared/styles/colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -73,9 +77,6 @@ Widget defaultFormField({
       onChanged: (value) {
         onChange!(value);
       },
-      onTap: () {
-        onTap!();
-      },
       validator: validate,
       decoration: InputDecoration(
         labelText: label,
@@ -135,7 +136,7 @@ void showToast({
 }) =>
     Fluttertoast.showToast(
       msg: text,
-      toastLength: Toast.LENGTH_LONG,
+      toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 5,
       backgroundColor: chooseToastColor(state),
@@ -174,10 +175,12 @@ Widget userItem({
   required String userRole,
   required String userPhone,
   required Function onClicked,
+  required Function onDeleteClicked,
 }) =>
     ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: HexColor("CFCEDF"),
+          elevation: 3,
           onPrimary: defaultColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // <-- Radius
@@ -187,7 +190,7 @@ Widget userItem({
           onClicked();
         },
         child: Padding(
-          padding: const EdgeInsets.all(9.0),
+          padding: const EdgeInsets.symmetric(vertical: 9.0),
           child: Wrap(children: <Widget>[
             Row(
               children: [
@@ -216,7 +219,7 @@ Widget userItem({
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        userRole,
+                        translateRoleStates(fromStringToRoleStates(userRole)),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.grey[600]),
@@ -228,7 +231,17 @@ Widget userItem({
                       )
                     ],
                   ),
-                )
+                ),
+                IconButton(
+                  onPressed: () {
+                    onDeleteClicked();
+                  },
+                  icon: const Icon(
+                    Icons.delete_forever,
+                    color: defaultColor,
+                  ),
+                  color: Colors.red,
+                ),
               ],
             ),
           ]),
@@ -313,7 +326,7 @@ Widget buttonDownMenu2(
           onChanged(value);
         },
         icon: const Icon(
-          Icons.arrow_forward_ios_outlined,
+          Icons.keyboard_arrow_down,
         ),
         iconSize: 14,
         buttonHeight: 50,
@@ -352,7 +365,7 @@ enum RoleStates {
   STOREMANAGER,
   SECTION,
   USER,
-  DEFAULT
+  DEFAULT,
 }
 
 String translateRoleStates(RoleStates state) {
@@ -388,4 +401,377 @@ String translateRoleStates(RoleStates state) {
       break;
   }
   return roleInArabic;
+}
+
+RoleStates fromStringToRoleStates(String role) {
+  RoleStates roleInRoleStates;
+
+  switch (role) {
+    case "ADMIN":
+      roleInRoleStates = RoleStates.ADMIN;
+      break;
+    case "SUPPLIERS":
+      roleInRoleStates = RoleStates.SUPPLIERS;
+      break;
+    case "ADDITIONOFFICIAL":
+      roleInRoleStates = RoleStates.ADDITIONOFFICIAL;
+      break;
+    case "STOREKEPPER":
+      roleInRoleStates = RoleStates.STOREKEPPER;
+      break;
+    case "SUPERVISORYOFFICER":
+      roleInRoleStates = RoleStates.SUPERVISORYOFFICER;
+      break;
+    case "STOREMANAGER":
+      roleInRoleStates = RoleStates.STOREMANAGER;
+      break;
+    case "SECTION":
+      roleInRoleStates = RoleStates.SECTION;
+      break;
+    case "USER":
+      roleInRoleStates = RoleStates.USER;
+      break;
+    case "DEFAULT":
+      roleInRoleStates = RoleStates.DEFAULT;
+      break;
+    default:
+      roleInRoleStates = RoleStates.DEFAULT;
+  }
+  return roleInRoleStates;
+}
+
+String reTranslateRoleState(String state) {
+  String roleInArabic;
+  switch (state) {
+    case "المسؤولين":
+      roleInArabic = "ADMIN";
+      break;
+    case "الموردين":
+      roleInArabic = "SUPPLIERS";
+      break;
+    case "المسؤولين الإضافيين":
+      roleInArabic = "ADDITIONOFFICIAL";
+      break;
+    case "امناء المخازن":
+      roleInArabic = "STOREKEPPER";
+      break;
+    case "مسؤولين الرقابه":
+      roleInArabic = "SUPERVISORYOFFICER";
+      break;
+    case "مديرين المخازن":
+      roleInArabic = "STOREMANAGER";
+      break;
+    case "الأقسام":
+      roleInArabic = "SECTION";
+      break;
+    case "المستخدمين":
+      roleInArabic = "USER";
+      break;
+    case "لم يتم تحديد وظيفه له":
+      roleInArabic = "DEFAULT";
+      break;
+    default:
+      roleInArabic = "";
+  }
+  return roleInArabic;
+}
+
+List<String> getRolesInArabic() {
+  List<String> roles = [
+    "جميع الموظفين",
+    "المسؤولين",
+    "الموردين",
+    "المسؤولين الإضافيين",
+    "امناء المخازن",
+    "مسؤولين الرقابه",
+    "مديرين المخازن",
+    "الأقسام",
+    "المستخدمين",
+    "لم يتم تحديد وظيفه له"
+  ];
+  return roles;
+}
+
+enum BranchStates { MATROH, TENTHOFRAMADAN, _6OCTOBER, DEFAULT }
+
+String translateBranchStates(BranchStates state) {
+  String branchInArabic;
+
+  switch (state) {
+    case BranchStates.MATROH:
+      branchInArabic = "مطروح";
+      break;
+    case BranchStates.TENTHOFRAMADAN:
+      branchInArabic = "العاشر من رمضان";
+      break;
+
+    case BranchStates.DEFAULT:
+      branchInArabic = "لم يتم تحديد فرع";
+      break;
+    case BranchStates._6OCTOBER:
+      branchInArabic = "السادس من اكتوبر";
+      break;
+  }
+  return branchInArabic;
+}
+
+enum SectionStates { CS, BIS, ENG, DEFAULT }
+
+String translateSectionStates(SectionStates state) {
+  String sectionInArabic;
+
+  switch (state) {
+    case SectionStates.CS:
+      sectionInArabic = "علوم حاسب";
+      break;
+    case SectionStates.BIS:
+      sectionInArabic = " قسم إدارة الأعمال التكنولوجية و المعلومات";
+      break;
+    case SectionStates.ENG:
+      sectionInArabic = "العاشر من رمضان";
+      break;
+    case SectionStates.DEFAULT:
+      sectionInArabic = "لم يتم تحديد قسم";
+      break;
+  }
+  return sectionInArabic;
+}
+
+Widget shimmer() => Center(
+      child: SizedBox(
+        width: 200.0,
+        height: 100.0,
+        child: Shimmer.fromColors(
+          baseColor: defaultColor,
+          highlightColor: Colors.white,
+          child: const Text(
+            'يتم الان تحميل البيانات',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+
+Widget errorWidget(String error) => Center(
+      child: Column(
+        children: [
+          const Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 60,
+          ),
+          Text(
+            error,
+            style: const TextStyle(
+              color: Colors.red,
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
+    );
+
+Widget dialog(
+        {required String title,
+        required String content,
+        required Function onPressedDone,
+        required Function onPressedCancel}) =>
+    AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: <Widget>[
+        MaterialButton(
+          child: const Text("حسنا"),
+          onPressed: () {
+            onPressedDone();
+          },
+        ),
+        MaterialButton(
+          child: const Text("إلغاء"),
+          onPressed: () {
+            onPressedCancel();
+          },
+        )
+      ],
+    );
+
+List<RoleStates> getRoles() {
+  List<RoleStates> roles = [];
+  roles.add((RoleStates.ADMIN));
+  roles.add((RoleStates.SUPPLIERS));
+  roles.add((RoleStates.ADDITIONOFFICIAL));
+  roles.add((RoleStates.STOREKEPPER));
+  roles.add((RoleStates.SUPERVISORYOFFICER));
+  roles.add((RoleStates.STOREMANAGER));
+  roles.add((RoleStates.SECTION));
+  roles.add((RoleStates.USER));
+  roles.add((RoleStates.DEFAULT));
+  return roles;
+}
+
+List<BranchStates> getBranches() {
+  List<BranchStates> branches = [];
+  branches.add((BranchStates.MATROH));
+  branches.add((BranchStates.TENTHOFRAMADAN));
+  branches.add((BranchStates._6OCTOBER));
+  branches.add((BranchStates.DEFAULT));
+  return branches;
+}
+
+List<SectionStates> getSections() {
+  List<SectionStates> sections = [];
+  sections.add((SectionStates.CS));
+  sections.add((SectionStates.BIS));
+  sections.add((SectionStates.ENG));
+  sections.add((SectionStates.DEFAULT));
+  return sections;
+}
+
+Widget dialogAddRole({
+  required Function onPressedDone,
+  required Function onPressedCancel,
+  AddUserCubit? addUserCubit,
+  UserProfileCubit? userCubit,
+}) {
+  var cubit;
+
+  if (addUserCubit != null) {
+    cubit = addUserCubit;
+  } else {
+    cubit = userCubit;
+  }
+
+  return StatefulBuilder(
+    builder: (BuildContext context, void Function(void Function()) setState) {
+      return AlertDialog(
+        title: Text(
+          "إضافة وظيفة",
+          textAlign: TextAlign.end,
+        ),
+        content: Container(
+          height: 251,
+          child: Column(
+            children: [
+              Text("اختر الوظيفة "),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                width: double.infinity,
+                child: DropdownButton<RoleStates>(
+                  isExpanded: true,
+                  alignment: Alignment.center,
+                  menuMaxHeight: 200,
+                  value: cubit.valueRole,
+                  underline: Container(
+                    height: 0,
+                    color: defaultColor,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  items: getRoles().map((RoleStates value) {
+                    return DropdownMenuItem<RoleStates>(
+                      alignment: Alignment.center,
+                      value: value,
+                      child: Text(translateRoleStates(value)),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      cubit.changeRole(newValue as RoleStates);
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("اختر الفرع "),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: DropdownButton<BranchStates>(
+                  isExpanded: true,
+                  alignment: Alignment.center,
+                  menuMaxHeight: 200,
+                  underline: Container(
+                    height: 0,
+                    color: defaultColor,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  value: cubit.valueBranch,
+                  items: getBranches().map((BranchStates value) {
+                    return DropdownMenuItem<BranchStates>(
+                      alignment: Alignment.center,
+                      value: value,
+                      child: Text(translateBranchStates(value)),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      cubit.changeBranch(newValue as BranchStates);
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("اختر الفسم "),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                width: double.infinity,
+                child: DropdownButton<SectionStates>(
+                  alignment: Alignment.center,
+                  menuMaxHeight: 200,
+                  underline: Container(
+                    height: 0,
+                    color: defaultColor,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  value: cubit.valueSection,
+                  items: getSections().map((SectionStates value) {
+                    return DropdownMenuItem<SectionStates>(
+                      alignment: Alignment.center,
+                      value: value,
+                      child: Text(translateSectionStates(value)),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      cubit.changeSection(newValue as SectionStates);
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          MaterialButton(
+            child: const Text("حفظ"),
+            onPressed: () {
+              onPressedDone();
+            },
+          ),
+          MaterialButton(
+            child: const Text("إلغاء"),
+            onPressed: () {
+              onPressedCancel();
+            },
+          )
+        ],
+      );
+    },
+  );
 }

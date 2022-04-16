@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/layout/super_admin/home_super_admin/cubit/states.dart';
 import 'package:hti_store/models/delet_user_model.dart';
 import 'package:hti_store/models/list_user_model.dart';
+import 'package:hti_store/modules/super_admin/search_users_screen/cubit/states.dart';
 import 'package:hti_store/shared/components/components.dart';
 import 'package:hti_store/shared/network/end_points.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
 import 'package:hti_store/shared/network/remote/dio_helper.dart';
 
-class HomeSuperUserCubit extends Cubit<HomeSuperUserStates> {
-  HomeSuperUserCubit() : super(HomeSuperUserInitialState());
+class SearchCubit extends Cubit<SearchStates> {
+  SearchCubit() : super(SearchInitialState());
 
-  static HomeSuperUserCubit get(context) => BlocProvider.of(context);
+  static SearchCubit get(context) => BlocProvider.of(context);
 
   // Initial Selected Value
   String dropDownValue = getRolesInArabic().first;
@@ -27,12 +27,12 @@ class HomeSuperUserCubit extends Cubit<HomeSuperUserStates> {
 
   void getUsers(String roles, String branch, String sections, String username,
       String limit) {
-    emit(HomeSuperUserLoadingState());
+    emit(SearchLoadingState());
 
     DioHelper.getData(
       url: GET_ALL_USERS,
       query: {
-        'roles': roles == "جميع الموظفين" ? "" : roles,
+        'roles': roles,
         'branch': branch,
         'sections': sections,
         'username': username,
@@ -47,19 +47,19 @@ class HomeSuperUserCubit extends Cubit<HomeSuperUserStates> {
                   print("Success"),
                   listUsers = ListUsers.fromJson(value.data),
                   if (listUsers!.result!.data!.isEmpty)
-                    {emit(HomeSuperUserIsEmpty())}
+                    {emit(SearchIsEmpty())}
                   else
-                    {emit(HomeSuperUserSuccessState(listUsers!))}
+                    {emit(SearchSuccessState(listUsers!))}
                 }
               else
-                {emit(HomeSuperUserErrorState("هناك خطاء في استلام البينات"))}
+                {emit(SearchErrorState("هناك خطاء في استلام البينات"))}
             })
         .catchError((error) {
       print(error.toString());
       if (error.toString().contains("SocketException")) {
-        emit(HomeSuperUserErrorState("هناك مشكله في الاتصال"));
+        emit(SearchErrorState("هناك مشكله في الاتصال"));
       } else {
-        emit(HomeSuperUserErrorState("هناك خطاء في استلام البينات"));
+        emit(SearchErrorState("هناك خطاء في استلام البينات"));
       }
     });
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hti_store/models/login_model.dart';
 import 'package:hti_store/modules/login/cubit/states.dart';
+import 'package:hti_store/shared/network/local/cache_helper.dart';
 
 import '../../../shared/network/end_points.dart';
 import '../../../shared/network/remote/dio_helper.dart';
@@ -17,8 +18,8 @@ class LoginCubit extends Cubit<LoginStates> {
   late LoginModel loginModel;
 
   void userLogin({
-    @required String? email,
-    @required String? password,
+    required String? email,
+    required String? password,
   }) {
     emit(LoginLoadingState());
 
@@ -29,18 +30,33 @@ class LoginCubit extends Cubit<LoginStates> {
         'password': password,
       },
     ).then((value) {
-      print(value.data);
       loginModel = LoginModel.fromJson(value.data);
 
       if (loginModel.status == true) {
+        print("true");
         emit(LoginSuccessState(loginModel));
       } else {
-        emit(LoginErrorState(loginModel.message!));
+        print("false");
+
+        print(loginModel.message);
+        emit(LoginErrorState(loginModel.message.toString()));
+      }
+
+      if (loginModel.status == false) {
+        print("false");
+
+        emit(LoginErrorState(loginModel.message.toString()));
+      }
+
+      if (value.statusCode == 400) {
+        print("400");
+
+        emit(LoginErrorState(loginModel.message.toString()));
       }
 
     }).catchError((error) {
-      print(error.toString());
-      emit(LoginErrorState(error.toString()));
+      print(error);
+      emit(LoginErrorState("خطأ بالبريد الاليكتروني او كلمه المرور"));
     });
   }
 
