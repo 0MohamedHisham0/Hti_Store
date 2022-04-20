@@ -5,7 +5,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'colors.dart';
 
 ThemeData darkTheme = ThemeData(
-  primarySwatch: defaultColor,
+  primarySwatch: defaultColorDark,
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: defaultColorDark,
+  ),
   scaffoldBackgroundColor: HexColor('333739'),
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
@@ -24,17 +27,16 @@ ThemeData darkTheme = ThemeData(
       color: Colors.white,
     ),
   ),
-
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.deepOrange,
+    selectedItemColor: defaultColorDark,
     unselectedItemColor: Colors.grey,
     elevation: 20.0,
     backgroundColor: HexColor('333739'),
   ),
   textTheme: const TextTheme(
     bodyText1: TextStyle(
-      fontSize: 18.0,
+      fontSize: 20.0,
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
@@ -43,6 +45,7 @@ ThemeData darkTheme = ThemeData(
 );
 
 ThemeData lightTheme = ThemeData(
+
   primarySwatch: defaultColor,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
@@ -65,11 +68,12 @@ ThemeData lightTheme = ThemeData(
 
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.deepOrange,
+    selectedItemColor: defaultColor,
     unselectedItemColor: Colors.grey,
     elevation: 20.0,
     backgroundColor: Colors.white,
   ),
+
   textTheme: const TextTheme(
     bodyText1: TextStyle(
       fontSize: 18.0,

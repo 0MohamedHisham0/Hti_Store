@@ -5,6 +5,7 @@ import 'package:hti_store/layout/super_admin/home_super_admin/cubit/cubit.dart';
 import 'package:hti_store/layout/super_admin/home_super_admin/cubit/states.dart';
 import 'package:hti_store/modules/super_admin/add_new_user/add_new_user.dart';
 import 'package:hti_store/shared/components/components.dart';
+import 'package:hti_store/shared/components/constants.dart';
 import '../../../modules/super_admin/search_users_screen/search_users_screen.dart';
 import '../../../modules/super_admin/user_profile_screen/user_profile_screen.dart';
 
@@ -25,7 +26,7 @@ class HomeSuperUserScreen extends StatelessWidget {
           var cubit = HomeSuperUserCubit.get(context);
           if (state is DeleteUserSuccessState) {
             cubit.getUsers(
-                reTranslateRoleState(cubit.dropDownValue), "", "", "", "");
+                translateRoleFromArabicToEnglish(cubit.dropDownValue), "", "", "", "");
           }
           if (state is DeleteUserErrorState) {
             showToast(
@@ -61,8 +62,8 @@ class HomeSuperUserScreen extends StatelessWidget {
 
           if (state is ChangeDropDownMenu) {
             print(state.role);
-            print(reTranslateRoleState(state.role));
-            cubit.getUsers(reTranslateRoleState(state.role), "", "", "", "");
+            print(translateRoleFromArabicToEnglish(state.role));
+            cubit.getUsers(translateRoleFromArabicToEnglish(state.role), "", "", "", "");
           }
         },
         builder: (context, state) {
@@ -75,7 +76,11 @@ class HomeSuperUserScreen extends StatelessWidget {
                   // Navigate to the Search Screen
                   IconButton(
                       onPressed: () => navigateTo(context, SearchUsersScreen()),
-                      icon: const Icon(Icons.search))
+                      icon: const Icon(Icons.search)),
+
+                  IconButton(
+                      onPressed: () => signOut(context),
+                      icon: const Icon(Icons.logout)),
                 ],
               ),
               floatingActionButton: Padding(

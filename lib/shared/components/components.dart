@@ -3,11 +3,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hti_store/modules/super_admin/add_new_user/cubit/cubit.dart';
 import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/cubit.dart';
+import 'package:hti_store/modules/suppliers/product_details_screen/product_details_screen.dart';
 import 'package:hti_store/shared/styles/colors.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../models/product_model.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -24,6 +29,9 @@ Widget defaultButton({
         onPressed: () {
           function();
         },
+        style: ElevatedButton.styleFrom(
+          primary: background,
+        ),
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
           style: const TextStyle(
@@ -247,6 +255,99 @@ Widget userItem({
           ]),
         ));
 
+Widget productItem({
+  required String productName,
+  required String productCompany,
+  required String productCount,
+  required Function onDetailClicked,
+  required Function onDeleteClicked,
+  IconData icon = Icons.chair,
+}) {
+  return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: HexColor("CFCEDF"),
+        elevation: 3,
+        onPrimary: defaultColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10), // <-- Radius
+        ),
+      ),
+      onPressed: () {
+        // onClicked();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 9.0),
+        child: Wrap(children: <Widget>[
+          Row(
+            children: [
+              Container(
+                width: 112.0,
+                height: 112.0,
+                child: Icon(
+                  icon,
+                ),
+                decoration: BoxDecoration(
+                    color: HexColor("C6C4DC"),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      productName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: defaultColor),
+                    ),
+                    Text(
+                      productCompany,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                    Text(
+                      productCount,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            onDetailClicked();
+                          },
+                          child: const Text("تفاصيل المنتج"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            onDeleteClicked();
+                          },
+                          icon: const Icon(
+                            Icons.delete_forever,
+                          ),
+                          color: Colors.red,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]),
+      ));
+}
+
 Widget buttonDownMenu(
         {required List<String> items,
         required String initialValue,
@@ -279,7 +380,9 @@ Widget buttonDownMenu(
 Widget buttonDownMenu2(
         {required List<String> items,
         required String initialValue,
-        required Function onChanged}) =>
+        required Function onChanged,
+        Color? color,
+        double radius = 14.0}) =>
     Center(
         child: DropdownButtonHideUnderline(
       child: DropdownButton2(
@@ -333,23 +436,23 @@ Widget buttonDownMenu2(
         buttonWidth: double.infinity,
         buttonPadding: const EdgeInsets.only(left: 14, right: 14),
         buttonDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(radius),
           border: Border.all(
             color: Colors.black26,
           ),
-          color: HexColor("CFCEDF"),
+          color: color ?? HexColor("CFCEDF"),
         ),
         buttonElevation: 2,
         itemHeight: 40,
-        itemPadding: const EdgeInsets.only(left: 14, right: 14),
+        itemPadding: EdgeInsets.only(left: 14, right: 14),
         dropdownMaxHeight: 200,
         dropdownPadding: null,
         dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: HexColor("CFCEDF"),
+          borderRadius: BorderRadius.circular(radius),
+          color: color ?? HexColor("CFCEDF"),
         ),
         dropdownElevation: 8,
-        scrollbarRadius: const Radius.circular(40),
+        scrollbarRadius: Radius.circular(40),
         scrollbarThickness: 6,
         scrollbarAlwaysShow: true,
       ),
@@ -366,6 +469,55 @@ enum RoleStates {
   SECTION,
   USER,
   DEFAULT,
+}
+
+enum ProductType {
+  consumer,
+  permanent,
+}
+
+String translateTypeToArabic(ProductType type) {
+  switch (type) {
+    case ProductType.consumer:
+      return "مستهلكة";
+    case ProductType.permanent:
+      return "مستديمة";
+    default:
+      return "";
+  }
+}
+
+ProductType translateTypeToProductType(String type) {
+  switch (type) {
+    case "مستهلكة":
+      return ProductType.consumer;
+    case "مستديمة":
+      return ProductType.permanent;
+    default:
+      return ProductType.consumer;
+  }
+}
+
+String translateTypeToEnglish(String type) {
+  switch (type) {
+    case "مستهلكة":
+      return "consumer";
+    case "مستديمة":
+      return "permanent";
+    default:
+      return "";
+  }
+}
+
+String translateEnglishTypeToArabic(String type) {
+  switch (type) {
+    case "consumer":
+      return "مستهلكة";
+    case "permanent":
+      return "مستديمة";
+    default:
+      return "";
+  }
 }
 
 String translateRoleStates(RoleStates state) {
@@ -440,7 +592,7 @@ RoleStates fromStringToRoleStates(String role) {
   return roleInRoleStates;
 }
 
-String reTranslateRoleState(String state) {
+String translateRoleFromArabicToEnglish(String state) {
   String roleInArabic;
   switch (state) {
     case "المسؤولين":
@@ -469,6 +621,42 @@ String reTranslateRoleState(String state) {
       break;
     case "لم يتم تحديد وظيفه له":
       roleInArabic = "DEFAULT";
+      break;
+    default:
+      roleInArabic = "";
+  }
+  return roleInArabic;
+}
+
+String translateRoleFromEnglishToArabic(String roleEnglish){
+  String roleInArabic;
+  switch (roleEnglish) {
+    case "ADMIN":
+      roleInArabic = "المسؤولين";
+      break;
+    case "SUPPLIERS":
+      roleInArabic = "الموردين";
+      break;
+    case "ADDITIONOFFICIAL":
+      roleInArabic = "المسؤولين الإضافيين";
+      break;
+    case "STOREKEPPER":
+      roleInArabic = "امناء المخازن";
+      break;
+    case "SUPERVISORYOFFICER":
+      roleInArabic = "مسؤولين الرقابه";
+      break;
+    case "STOREMANAGER":
+      roleInArabic = "مديرين المخازن";
+      break;
+    case "SECTION":
+      roleInArabic = "الأقسام";
+      break;
+    case "USER":
+      roleInArabic = "المستخدمين";
+      break;
+    case "DEFAULT":
+      roleInArabic = "لم يتم تحديد وظيفه له";
       break;
     default:
       roleInArabic = "";
@@ -648,15 +836,14 @@ Widget dialogAddRole({
   return StatefulBuilder(
     builder: (BuildContext context, void Function(void Function()) setState) {
       return AlertDialog(
-        title: Text(
+        title: const Text(
           "إضافة وظيفة",
           textAlign: TextAlign.end,
         ),
-        content: Container(
-          height: 251,
-          child: Column(
+        content: Wrap(children: [
+          Column(
             children: [
-              Text("اختر الوظيفة "),
+              const Text("اختر الوظيفة "),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
@@ -756,7 +943,7 @@ Widget dialogAddRole({
               ),
             ],
           ),
-        ),
+        ]),
         actions: <Widget>[
           MaterialButton(
             child: const Text("حفظ"),
@@ -775,3 +962,127 @@ Widget dialogAddRole({
     },
   );
 }
+
+Widget productsScreen(List<ProductData>? list,
+    {required Function onRefresh,
+    required RefreshController refreshController}) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SmartRefresher(
+        enablePullDown: true,
+        header: const WaterDropHeader(),
+        onRefresh: () async {
+          onRefresh();
+        },
+        controller: refreshController,
+        child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return productItem(
+                  productName: list![index].name.toString(),
+                  productCompany: list[index].supplieredCompany.toString(),
+                  productCount: list[index].count.toString(),
+                  onDetailClicked: () {
+                    navigateTo(context, ProductDetailsScreen(list[index].id!));
+                  },
+                  onDeleteClicked: () {});
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 12);
+            },
+            itemCount: list!.length),
+      ),
+    ),
+  );
+}
+
+Widget itemDetailRowWithDivider(
+    {required String title,
+    required String value,
+    required context,
+    double width = 20.0}) {
+  return Container(
+    child: Column(
+      children: <Widget>[
+        const SizedBox(
+          height: 10,
+        ),
+        myDivider(),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Container(
+              width: 100,
+              child: Text(
+                title,
+                style: GoogleFonts.outfit(
+                    textStyle: Theme.of(context).textTheme.bodyText1!),
+              ),
+            ),
+            SizedBox(
+              width: width,
+            ),
+            Text(
+              value,
+              style: GoogleFonts.outfit(
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget itemDetailRow(
+    {required String title,
+    required String value,
+    required context,
+    double width = 20.0}) {
+  return Row(
+    children: [
+      Container(
+        width: 100,
+        child: Text(
+          title,
+          style: GoogleFonts.outfit(
+              textStyle: Theme.of(context).textTheme.bodyText1!),
+        ),
+      ),
+      SizedBox(
+        width: width,
+      ),
+      Text(
+        value,
+        style: GoogleFonts.outfit(
+          textStyle: Theme.of(context)
+              .textTheme
+              .bodyText1!
+              .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget defaultText(
+        {required String value,
+        required context,
+        FontWeight? fontWeight = FontWeight.normal,
+        double fontSized = 17}) =>
+    Text(
+      value,
+      style: GoogleFonts.outfit(
+        textStyle: Theme.of(context)
+            .textTheme
+            .bodyText1!
+            .copyWith(fontWeight: fontWeight, fontSize: fontSized),
+      ),
+    );

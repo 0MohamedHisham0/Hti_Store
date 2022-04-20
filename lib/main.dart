@@ -1,9 +1,10 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:hti_store/layout/super_admin/home_super_admin/home_super_admin.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hti_store/modules/login/login_screen.dart';
 import 'package:hti_store/modules/on_boarding/on_boarding_screen.dart';
+import 'package:hti_store/modules/suppliers/all_products_screens/cubit/cubit.dart';
 import 'package:hti_store/shared/bloc_observer.dart';
+import 'package:hti_store/shared/components/constants.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
 import 'package:hti_store/shared/network/remote/dio_helper.dart';
 import 'package:hti_store/shared/styles/themes.dart';
@@ -20,11 +21,10 @@ Future<void> main() async {
 
   bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   String? token = CacheHelper.getData(key: 'token');
-
+  String? userRole = CacheHelper.getData(key: 'userRole');
   if (onBoarding != null) {
-    if (token != null) {
-      widget = const HomeSuperUserScreen();
-      print("HomeSuperAdmin");
+    if (token != null && userRole != null) {
+      widget = getHomeScreen(userRole);
     } else {
       widget = LoginScreen();
       print("LoginScreen");
@@ -52,13 +52,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
-      home:  Directionality(
-          textDirection: TextDirection.rtl, child: startWidget!),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AllProductsCubit()
+              ..getPermanentProducts()
+              ..getConsumerProducts(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.light,
+          home: Directionality(
+              textDirection: TextDirection.rtl, child: startWidget!),
+        ));
   }
 }

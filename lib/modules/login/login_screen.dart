@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hti_store/modules/login/cubit/cubit.dart';
 import 'package:hti_store/modules/login/cubit/states.dart';
 import 'package:hti_store/shared/components/components.dart';
+import 'package:hti_store/shared/components/constants.dart';
 
-import '../../layout/super_admin/home_super_admin/home_super_admin.dart';
 import '../../shared/network/local/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -26,10 +26,11 @@ class LoginScreen extends StatelessWidget {
               key: 'token',
               value: state.loginModel.token,
             ).then((value) {
-              navigateAndFinish(
-                context,
-                HomeSuperUserScreen(),
-              );
+              var userRole = state.loginModel.data!.roles;
+              CacheHelper.saveData(key: "userRole", value: userRole)
+                  .then((value) => {
+                        navigateToHomeScreen(userRole!, context),
+                      });
             });
           }
 
@@ -85,8 +86,7 @@ class LoginScreen extends StatelessWidget {
                               }
                               return null;
                             },
-                            label:
-                                'البريد الإلكتروني',
+                            label: 'البريد الإلكتروني',
                             prefix: Icons.email_outlined,
                             onChange: (value) {}),
                         const SizedBox(
@@ -98,7 +98,8 @@ class LoginScreen extends StatelessWidget {
                           suffix: cubit.suffix,
                           onSubmit: (value) {
                             if (formKey.currentState!.validate()) {
-                              print('${emailController.text} ====================');
+                              print(
+                                  '${emailController.text} ====================');
                               print(passwordController.text);
                               cubit.userLogin(
                                 email: emailController.text,
@@ -115,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                             if (value.isEmpty) {
                               return 'الرجاء إدخال كلمة المرور';
                             }
-                            if(value.length < 6){
+                            if (value.length < 6) {
                               return 'كلمة المرور قصيرة جدا';
                             }
                             return null;

@@ -42,7 +42,11 @@ class UserProfile extends StatelessWidget {
           }
           if (state is DeleteUserSuccessState) {
             Navigator.pop(context);
-            navigateAndFinish(context, HomeSuperUserScreen(text: "From User Profile",));
+            navigateAndFinish(
+                context,
+                HomeSuperUserScreen(
+                  text: "From User Profile",
+                ));
             showToast(text: "تم حذف الموظف بنجاح", state: ToastStates.SUCCESS);
           }
           if (state is DeleteUserLoadingState) {
@@ -119,144 +123,27 @@ class UserProfile extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 100,
-                              child: Text(
-                                "اسم الموظف",
-                                style: GoogleFonts.outfit(
-                                    textStyle: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 17)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width,
-                            ),
-                            Text(
-                              "${cubit.userData!.username}",
-                              style: GoogleFonts.outfit(
-                                  textStyle: const TextStyle(fontSize: 16)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        myDivider(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 100,
-                              child: Text(
-                                "البريد الالكتروني",
-                                style: GoogleFonts.outfit(
-                                    textStyle: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 17)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width,
-                            ),
-                            Text(
-                              "${cubit.userData!.email}",
-                              style: GoogleFonts.outfit(
-                                  textStyle: const TextStyle(fontSize: 16)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        myDivider(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: Text(
-                                "الوظيفه",
-                                style: GoogleFonts.outfit(
-                                    textStyle: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 17)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width,
-                            ),
-                            Text(
-                              "${cubit.userData!.roles}",
-                              style: GoogleFonts.outfit(
-                                  textStyle: const TextStyle(fontSize: 16)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        myDivider(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: Text(
-                                "القسم",
-                                style: GoogleFonts.outfit(
-                                    textStyle: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 17)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width,
-                            ),
-                            Text(
-                              "${cubit.userData!.sections}",
-                              style: GoogleFonts.outfit(
-                                  textStyle: const TextStyle(fontSize: 16)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        myDivider(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 100,
-                              child: Text(
-                                "الفرع",
-                                style: GoogleFonts.outfit(
-                                    textStyle: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 17)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width,
-                            ),
-                            Text(
-                              "${cubit.userData!.branch}",
-                              style: GoogleFonts.outfit(
-                                  textStyle: const TextStyle(fontSize: 16)),
-                            ),
-                          ],
-                        ),
+                        itemDetailRow(
+                            title: "اسم الموظف",
+                            value: "${cubit.userData!.username}",
+                            context: context),
+                        itemDetailRowWithDivider(
+                            title: "البريد الالكتروني",
+                            value: "${cubit.userData!.email}",
+                            context: context),
+                        itemDetailRowWithDivider(
+                            title: "الوظيفه",
+                            value: translateRoleFromEnglishToArabic(
+                                cubit.userData!.roles.toString()),
+                            context: context),
+                        itemDetailRowWithDivider(
+                            title: "القسم",
+                            value: "${cubit.userData!.sections}",
+                            context: context),
+                        itemDetailRowWithDivider(
+                            title: "الفرع",
+                            value: "${cubit.userData!.branch}",
+                            context: context),
                       ],
                     ),
                   );

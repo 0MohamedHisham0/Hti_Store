@@ -22,7 +22,7 @@ class SearchUsersScreen extends StatelessWidget {
           var cubit = SearchCubit.get(context);
           if (state is DeleteUserSuccessState) {
             cubit.getUsers(
-                reTranslateRoleState(cubit.dropDownValue), "", "", "", "");
+                translateRoleFromArabicToEnglish(cubit.dropDownValue), "", "", "", "");
           }
           if (state is DeleteUserErrorState) {
             showToast(
@@ -59,7 +59,7 @@ class SearchUsersScreen extends StatelessWidget {
           }
 
           if (state is ChangeDropDownMenu) {
-            cubit.getUsers(reTranslateRoleState(state.role), "", "", "", "");
+            cubit.getUsers(translateRoleFromArabicToEnglish(state.role), "", "", "", "");
           }
         }, builder: (context, state) {
           var cubit = SearchCubit.get(context);
@@ -176,7 +176,7 @@ class SearchUsersScreen extends StatelessWidget {
                         );
                       },
                       fallback: (context) {
-                        return widget ?? const Text("اكتب اسم الموظف");
+                        return Center(child: widget ?? const Text("اكتب اسم الموظف"));
                       }),
                 ],
               ),
