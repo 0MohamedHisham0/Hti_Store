@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:hti_store/modules/super_admin/add_new_user/cubit/cubit.dart';
 import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/cubit.dart';
 import 'package:hti_store/modules/suppliers/product_details_screen/product_details_screen.dart';
+import 'package:hti_store/shared/components/constants.dart';
 import 'package:hti_store/shared/styles/colors.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
@@ -111,7 +111,7 @@ Widget myDivider() => Container(
       color: Colors.grey[300],
     );
 
-void navigateTo(context, widget) => Navigator.push(
+Future navigateTo(context, widget) => Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Directionality(
@@ -257,10 +257,10 @@ Widget userItem({
 
 Widget productItem({
   required String productName,
+  required String productDate,
   required String productCompany,
   required String productCount,
   required Function onDetailClicked,
-  required Function onDeleteClicked,
   IconData icon = Icons.chair,
 }) {
   return ElevatedButton(
@@ -307,6 +307,12 @@ Widget productItem({
                           color: defaultColor),
                     ),
                     Text(
+                      productDate,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    ),
+                    Text(
                       productCompany,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -317,27 +323,11 @@ Widget productItem({
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            onDetailClicked();
-                          },
-                          child: const Text("تفاصيل المنتج"),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            onDeleteClicked();
-                          },
-                          icon: const Icon(
-                            Icons.delete_forever,
-                          ),
-                          color: Colors.red,
-                        ),
-                      ],
+                    ElevatedButton(
+                      onPressed: () {
+                        onDetailClicked();
+                      },
+                      child: const Text("تفاصيل المنتج"),
                     )
                   ],
                 ),
@@ -346,6 +336,126 @@ Widget productItem({
           ),
         ]),
       ));
+}
+
+Widget productItemWithAcceptButtons({
+  required String productName,
+  required String productDate,
+  required String productCompany,
+  required String productCount,
+  required String productSupplier,
+  required Function onDetailClicked,
+  IconData icon = Icons.chair,
+  required Function onAcceptClicked,
+  required Function onRejectClicked,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+        color: HexColor("CFCEDF"),
+        borderRadius: const BorderRadius.all(Radius.circular(10))),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 9.0, horizontal: 10.0),
+      child: Wrap(children: <Widget>[
+        Row(
+          children: [
+            Container(
+              width: 120.0,
+              height: 120.0,
+              child: Icon(
+                icon,
+              ),
+              decoration: BoxDecoration(
+                  color: HexColor("C6C4DC"),
+                  borderRadius: const BorderRadius.all(Radius.circular(10))),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    productName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: defaultColor),
+                  ),
+                  Text(
+                    changeDateFormat(productDate),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        productCompany,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: defaultColor),
+                      ),
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      const CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 2,
+                      ),
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      Text(
+                        productSupplier,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: defaultColor),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "الكمية " + productCount,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          onAcceptClicked();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          elevation: 3,
+                        ),
+                        child: const Text("قبول"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          onRejectClicked();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          elevation: 3,
+                        ),
+                        child: const Text("رفض"),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ]),
+    ),
+  );
 }
 
 Widget buttonDownMenu(
@@ -628,7 +738,7 @@ String translateRoleFromArabicToEnglish(String state) {
   return roleInArabic;
 }
 
-String translateRoleFromEnglishToArabic(String roleEnglish){
+String translateRoleFromEnglishToArabic(String roleEnglish) {
   String roleInArabic;
   switch (roleEnglish) {
     case "ADMIN":
@@ -972,7 +1082,7 @@ Widget productsScreen(List<ProductData>? list,
       child: SmartRefresher(
         enablePullDown: true,
         header: const WaterDropHeader(),
-        onRefresh: () async {
+        onRefresh: () {
           onRefresh();
         },
         controller: refreshController,
@@ -980,13 +1090,122 @@ Widget productsScreen(List<ProductData>? list,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return productItem(
-                  productName: list![index].name.toString(),
+                  productDate: list![index].createdAt.toString(),
+                  icon: list[index].type == "permanent"
+                      ? Icons.chair
+                      : Icons.restaurant,
+                  productName: list[index].name.toString(),
                   productCompany: list[index].supplieredCompany.toString(),
                   productCount: list[index].count.toString(),
                   onDetailClicked: () {
                     navigateTo(context, ProductDetailsScreen(list[index].id!));
-                  },
-                  onDeleteClicked: () {});
+                  });
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 12);
+            },
+            itemCount: list!.length),
+      ),
+    ),
+  );
+}
+
+Widget productsScreenWithBottomMenuAndAcceptButtonItem(List<ProductData>? list,
+    {required Function onRefresh,
+    required RefreshController refreshController,
+    required String dropDownValue,
+    required List<String> dropDownList,
+    required Function onDropDownChanged,
+    required Function onAcceptClicked,
+    required Function onRejectClicked}) {
+  return Scaffold(
+    appBar: AppBar(
+      title: buttonDownMenu2(
+          initialValue: dropDownValue,
+          items: dropDownList,
+          onChanged: (String value) {
+            onDropDownChanged(value);
+          }),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SmartRefresher(
+        enablePullDown: true,
+        header: const WaterDropHeader(),
+        onRefresh: () {
+          onRefresh();
+        },
+        controller: refreshController,
+        child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return productItemWithAcceptButtons(
+                icon: list![index].type == "permanent"
+                    ? Icons.chair
+                    : Icons.restaurant,
+                productName: list[index].name.toString(),
+                productCompany: list[index].supplieredCompany.toString(),
+                productCount: list[index].count.toString(),
+                onDetailClicked: () {
+                  navigateTo(context, ProductDetailsScreen(list[index].id!));
+                },
+                onAcceptClicked: () {
+                  onAcceptClicked(index);
+                },
+                onRejectClicked: () {
+                  onRejectClicked(index);
+                },
+                productSupplier: list[index].nameofsupplier.toString(),
+                productDate: list[index].createdAt.toString(),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 12);
+            },
+            itemCount: list!.length),
+      ),
+    ),
+  );
+}
+
+Widget productsScreenWithBottomMenu(List<ProductData>? list,
+    {required Function onRefresh,
+    required RefreshController refreshController,
+    required String dropDownValue,
+    required List<String> dropDownList,
+    required Function onDropDownChanged}) {
+  return Scaffold(
+    appBar: AppBar(
+      title: buttonDownMenu2(
+          initialValue: dropDownValue,
+          items: dropDownList,
+          onChanged: (String value) {
+            onDropDownChanged(value);
+          }),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SmartRefresher(
+        enablePullDown: true,
+        header: const WaterDropHeader(),
+        onRefresh: () {
+          onRefresh();
+        },
+        controller: refreshController,
+        child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return productItem(
+                  productDate: list![index].createdAt.toString(),
+                  icon: list[index].type == "permanent"
+                      ? Icons.chair
+                      : Icons.restaurant,
+                  productName: list[index].name.toString(),
+                  productCompany: list[index].supplieredCompany.toString(),
+                  productCount: list[index].count.toString(),
+                  onDetailClicked: () {
+                    navigateTo(context, ProductDetailsScreen(list[index].id!));
+                  });
             },
             separatorBuilder: (context, index) {
               return const SizedBox(height: 12);
@@ -1048,7 +1267,7 @@ Widget itemDetailRow(
     double width = 20.0}) {
   return Row(
     children: [
-      Container(
+      SizedBox(
         width: 100,
         child: Text(
           title,
@@ -1084,5 +1303,18 @@ Widget defaultText(
             .textTheme
             .bodyText1!
             .copyWith(fontWeight: fontWeight, fontSize: fontSized),
+      ),
+    );
+
+Widget errorWidgetWithRefresh({required Function onClicked}) => Center(
+      child: Column(
+        children: [
+          IconButton(
+              onPressed: () {
+                onClicked();
+              },
+              icon: const Icon(Icons.refresh)),
+          const Text("هناك مشكله حاول مره اخري"),
+        ],
       ),
     );

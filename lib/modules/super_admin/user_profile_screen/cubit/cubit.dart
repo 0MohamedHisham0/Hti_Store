@@ -79,19 +79,4 @@ class UserProfileCubit extends Cubit<UserProfileStates> {
     });
   }
 
-  void changeRole(RoleStates value) {
-    valueRole = value;
-    emit(ChangeRoleState());
-    print(valueRole.name + "changed");
-  }
-
-  void changeBranch(BranchStates value) {
-    valueBranch = value;
-    emit(ChangeBranchState());
-  }
-
-  void changeSection(SectionStates value) {
-    valueSection = value;
-    emit(ChangeSectionState());
-  }
 }

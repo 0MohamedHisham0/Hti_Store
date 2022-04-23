@@ -57,7 +57,7 @@ class ConsumableProductScreen extends StatelessWidget {
           condition: cubit.listConsumerModel != null,
           builder: (context) {
             return productsScreen(cubit.listConsumerModel!.data!.data,
-              onRefresh: () async {
+              onRefresh: () {
                 cubit.getConsumerProducts();
               },
               refreshController: _refreshController,

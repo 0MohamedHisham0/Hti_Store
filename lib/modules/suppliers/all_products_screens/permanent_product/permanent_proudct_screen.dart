@@ -11,12 +11,14 @@ class PermanentProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RefreshController _refreshController = RefreshController(initialRefresh: false);
+    RefreshController _refreshController =
+        RefreshController(initialRefresh: false);
     Widget? widget;
     return BlocConsumer<AllProductsCubit, AllProductsStates>(
         listener: (context, state) {
 
       var cubit = AllProductsCubit.get(context);
+
       if (state is AllProductsErrorState) {
         _refreshController.refreshCompleted();
 
@@ -33,18 +35,19 @@ class PermanentProductScreen extends StatelessWidget {
           ),
         );
       }
-      if (state is AllProductsLoadingState) {
 
+      if (state is AllProductsLoadingState) {
         widget = Center(
           child: shimmer(),
         );
       }
+
       if (state is AllProductsSuccessState) {
         _refreshController.refreshCompleted();
 
         widget = productsScreen(
           cubit.listPermanentModel!.data!.data,
-          onRefresh: ()  {
+          onRefresh: () {
             cubit.getPermanentProducts();
           },
           refreshController: _refreshController,
@@ -58,7 +61,7 @@ class PermanentProductScreen extends StatelessWidget {
           builder: (context) {
             return productsScreen(
               cubit.listPermanentModel!.data!.data,
-              onRefresh: ()  {
+              onRefresh: () {
                 cubit.getPermanentProducts();
               },
               refreshController: _refreshController,

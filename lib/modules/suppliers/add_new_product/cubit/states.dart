@@ -3,52 +3,52 @@ import 'package:hti_store/models/product_model.dart';
 
 import '../../../../models/delet_user_model.dart';
 
-abstract class AddNewProductStates {}
+abstract class UpdateProductStates {}
 
-class AddNewProductInitialState extends AddNewProductStates {}
+class UpdateProductInitialState extends UpdateProductStates {}
 
-class AddNewProductLoadingState extends AddNewProductStates {}
+class UpdateProductLoadingState extends UpdateProductStates {}
 
-class AddNewProductSuccessState extends AddNewProductStates {
+class UpdateProductSuccessState extends UpdateProductStates {
   final ProductModel listUsers;
 
-  AddNewProductSuccessState(this.listUsers);
+  UpdateProductSuccessState(this.listUsers);
 }
 
-class AddNewProductErrorState extends AddNewProductStates {
+class UpdateProductErrorState extends UpdateProductStates {
   final String error;
 
-  AddNewProductErrorState(this.error);
+  UpdateProductErrorState(this.error);
 }
 
-class AddNewProductIsEmpty extends AddNewProductStates {
-  AddNewProductIsEmpty();
+class UpdateProductIsEmpty extends UpdateProductStates {
+  UpdateProductIsEmpty();
 }
 
-class ChangeDropDownMenu extends AddNewProductStates {
+class ChangeDropDownMenu extends UpdateProductStates {
   final String role;
 
   ChangeDropDownMenu(this.role);
 }
 
-class DeleteUserLoadingState extends AddNewProductStates {}
+class DeleteUserLoadingState extends UpdateProductStates {}
 
-class DeleteUserSuccessState extends AddNewProductStates {
+class DeleteUserSuccessState extends UpdateProductStates {
   final DeleteUserModel deleteModel;
 
   DeleteUserSuccessState(this.deleteModel);
 }
 
-class DeleteUserErrorState extends AddNewProductStates {
+class DeleteUserErrorState extends UpdateProductStates {
   final String error;
 
   DeleteUserErrorState(this.error);
 }
 
-class AddNewProductChangeNumberPickedState extends AddNewProductStates {
-  AddNewProductChangeNumberPickedState();
+class UpdateProductChangeNumberPickedState extends UpdateProductStates {
+  UpdateProductChangeNumberPickedState();
 }
 
-class AddNewProductChangeMenuState extends AddNewProductStates {
-  AddNewProductChangeMenuState();
+class UpdateProductChangeMenuState extends UpdateProductStates {
+  UpdateProductChangeMenuState();
 }

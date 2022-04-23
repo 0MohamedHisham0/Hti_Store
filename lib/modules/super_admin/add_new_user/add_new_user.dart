@@ -25,7 +25,8 @@ class AddNewUserScreen extends StatelessWidget {
           if (state is AddUserSuccessState) {
             var cubit = AddUserCubit.get(context);
 
-            showToast(text: state.addUserModel.message!, state: ToastStates.SUCCESS);
+            showToast(
+                text: state.addUserModel.message!, state: ToastStates.SUCCESS);
 
             if (state.addUserModel.status == true) {
               showDialog(
@@ -41,20 +42,22 @@ class AddNewUserScreen extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (context) => dialogAddRole(
-                                onPressedDone: () {
-                                  cubit.updateUserRole(
-                                    type: RoleStates
-                                        .values[cubit.valueRole.index].name,
-                                    section: SectionStates
-                                        .values[cubit.valueSection.index].name,
-                                    branch: BranchStates
-                                        .values[cubit.valueBranch.index].name,
-                                  );
-                                },
-                                onPressedCancel: () {
-                                  Navigator.pop(context);
-                                },
-                                addUserCubit: cubit,));
+                                  onPressedDone: () {
+                                    cubit.updateUserRole(
+                                      type: RoleStates
+                                          .values[cubit.valueRole.index].name,
+                                      section: SectionStates
+                                          .values[cubit.valueSection.index]
+                                          .name,
+                                      branch: BranchStates
+                                          .values[cubit.valueBranch.index].name,
+                                    );
+                                  },
+                                  onPressedCancel: () {
+                                    Navigator.pop(context);
+                                  },
+                                  addUserCubit: cubit,
+                                ));
                       },
                       onPressedCancel: () {
                         Navigator.pop(context, true);
@@ -169,8 +172,10 @@ class AddNewUserScreen extends StatelessWidget {
               ),
             ),
           );
+
         },
       ),
     );
+
   }
 }

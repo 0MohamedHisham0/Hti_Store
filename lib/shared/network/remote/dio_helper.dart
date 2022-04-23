@@ -7,7 +7,7 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://store10hti.herokuapp.com//',
+        baseUrl: 'https://store10hti.herokuapp.com/',
         receiveDataWhenStatusError: true,
         headers:
         {

@@ -20,8 +20,9 @@ class ProductData {
   String? description;
   String? type;
   String? status;
-  String? storeId;
+  int? storeId;
   String? createdAt;
+  bool? accept;
 
   // named constructor
   ProductData.fromJson(Map<String, dynamic> json) {
@@ -29,12 +30,13 @@ class ProductData {
     count = json['count'];
     id = json['id'];
     nameofsupplier = json['nameofsupplier'];
-    phoneofsupplier = json['roles'];
+    phoneofsupplier = json['phoneofsupplier'];
     supplieredCompany = json['supplieredCompany'];
     description = json['description'];
     type = json['type'];
     status = json['status'];
     storeId = json['storeId'];
     createdAt = json['createdAt'];
+    accept = json['accept'];
   }
 }

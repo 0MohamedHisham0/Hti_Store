@@ -1,14 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/layout/super_admin/home_super_admin/cubit/states.dart';
-import 'package:hti_store/models/delet_user_model.dart';
-import 'package:hti_store/models/list_user_model.dart';
-import 'package:hti_store/modules/suppliers/add_new_product/cubit/states.dart';
-import 'package:hti_store/shared/components/components.dart';
+
 import 'package:hti_store/shared/network/end_points.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
 import 'package:hti_store/shared/network/remote/dio_helper.dart';
 
 import '../../../../models/product_model.dart';
+import '../../update_product/cubit/states.dart';
 
 class AddNewProductCubit extends Cubit<AddNewProductStates> {
   AddNewProductCubit() : super(AddNewProductInitialState());
