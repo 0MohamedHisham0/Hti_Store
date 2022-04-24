@@ -307,19 +307,13 @@ Widget productItem({
                           color: defaultColor),
                     ),
                     Text(
-                      productDate,
+                      changeDateFormat(productDate),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                     Text(
-                      productCompany,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                    Text(
-                      productCount,
+                      "الكمية : " + productCount,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -1018,10 +1012,10 @@ Widget dialogAddRole({
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text("اختر الفسم "),
+              const Text("اختر الفسم "),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
@@ -1221,42 +1215,40 @@ Widget itemDetailRowWithDivider(
     required String value,
     required context,
     double width = 20.0}) {
-  return Container(
-    child: Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 10,
-        ),
-        myDivider(),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          children: [
-            Container(
-              width: 100,
-              child: Text(
-                title,
-                style: GoogleFonts.outfit(
-                    textStyle: Theme.of(context).textTheme.bodyText1!),
-              ),
-            ),
-            SizedBox(
-              width: width,
-            ),
-            Text(
-              value,
+  return Column(
+    children: <Widget>[
+      const SizedBox(
+        height: 10,
+      ),
+      myDivider(),
+      const SizedBox(
+        height: 10,
+      ),
+      Row(
+        children: [
+          Container(
+            width: 100,
+            child: Text(
+              title,
               style: GoogleFonts.outfit(
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
-              ),
+                  textStyle: Theme.of(context).textTheme.bodyText1!),
             ),
-          ],
-        ),
-      ],
-    ),
+          ),
+          SizedBox(
+            width: width,
+          ),
+          Text(
+            value,
+            style: GoogleFonts.outfit(
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+            ),
+          ),
+        ],
+      ),
+    ],
   );
 }
 
@@ -1306,7 +1298,11 @@ Widget defaultText(
       ),
     );
 
-Widget errorWidgetWithRefresh({required Function onClicked}) => Center(
+Widget errorWidgetWithRefresh({
+  required Function onClicked,
+   String text = "هناك مشكله حاول مره اخري",
+}) =>
+    Center(
       child: Column(
         children: [
           IconButton(
@@ -1314,7 +1310,7 @@ Widget errorWidgetWithRefresh({required Function onClicked}) => Center(
                 onClicked();
               },
               icon: const Icon(Icons.refresh)),
-          const Text("هناك مشكله حاول مره اخري"),
+           Text(text),
         ],
       ),
     );

@@ -45,7 +45,7 @@ class ConsumableProductScreen extends StatelessWidget {
 
         widget = productsScreen(
           cubit.listConsumerModel!.data!.data,
-          onRefresh: () async {
+          onRefresh: ()  {
             cubit.getConsumerProducts();
           },
           refreshController: _refreshController,
@@ -56,14 +56,37 @@ class ConsumableProductScreen extends StatelessWidget {
       return ConditionalBuilder(
           condition: cubit.listConsumerModel != null,
           builder: (context) {
-            return productsScreen(cubit.listConsumerModel!.data!.data,
-              onRefresh: () {
-                cubit.getConsumerProducts();
-              },
-              refreshController: _refreshController,
-            );
+            return ConditionalBuilder(
+                condition: cubit.listConsumerModel!.data!.data!.isEmpty,
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        errorWidgetWithRefresh(
+                            onClicked: () {
+                              cubit.getConsumerProducts();
+                            },
+                            text: "لا يوجد منتجات"),
+                      ],
+                    ),
+                  );
+                },
+                fallback: (context) {
+                  return productsScreen(
+                    cubit.listConsumerModel!.data!.data,
+                    onRefresh: ()  {
+                      cubit.getConsumerProducts();
+                    },
+                    refreshController: _refreshController,
+                  );
+                });
           },
           fallback: (context) => widget ?? shimmer());
+      
     });
   }
 }

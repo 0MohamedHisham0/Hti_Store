@@ -38,7 +38,6 @@ class OutStoreProductScreen extends StatelessWidget {
             widget = errorWidget('لا يوحد منتجات');
           }
 
-
           if (state is OutStoreSuccessState) {
             _refreshController.refreshCompleted();
 
@@ -58,10 +57,8 @@ class OutStoreProductScreen extends StatelessWidget {
           if (state is OutStoreChangeProductSuccessState) {
             if (state.productModel.data!.accept == true) {
               showToast(text: "تم قبول المنتج", state: ToastStates.SUCCESS);
-              cubit.getProductsFromBottomMenuValue();
             } else {
               showToast(text: "تم رفض المنتج", state: ToastStates.ERROR);
-              cubit.getProductsFromBottomMenuValue();
             }
           }
 

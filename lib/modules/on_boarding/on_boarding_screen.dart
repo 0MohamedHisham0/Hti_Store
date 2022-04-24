@@ -58,7 +58,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       if (value!) {
         navigateAndFinish(
           context,
-           LoginScreen(),
+          LoginScreen(),
         );
       }
     });
@@ -70,7 +70,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       appBar: AppBar(
         actions: [
           defaultTextButton(
-            function: submit,
+            function: () {
+              submit();
+            },
             text: 'تخطي',
           ),
         ],
@@ -94,7 +96,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     });
                   }
                 },
-                itemBuilder: (context, index) => buildBoardingItem(boarding[index]),
+                itemBuilder: (context, index) =>
+                    buildBoardingItem(boarding[index]),
                 itemCount: boarding.length,
               ),
             ),

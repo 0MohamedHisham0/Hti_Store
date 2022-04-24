@@ -162,6 +162,8 @@ class OutStoreCubit extends Cubit<OutStoreStates> {
                     {
                       emit(OutStoreChangeProductSuccessState(
                           productModelReceived!)),
+                      getProductsFromBottomMenuValue(),
+
                     }
                   else
                     {
