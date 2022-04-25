@@ -77,6 +77,7 @@ class OutStoreProductScreen extends StatelessWidget {
                         .data!
                         .isEmpty,
                     builder: (context) {
+                      showToast(text: "لا يوجد منتجات حاليا", state: ToastStates.WARNING);
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -90,7 +91,11 @@ class OutStoreProductScreen extends StatelessWidget {
                             const SizedBox(
                               height: 50,
                             ),
-                            errorWidget('لا يوحد منتجات'),
+                            errorWidgetWithRefresh(
+                                onClicked: () {
+                                  cubit.getProductsFromBottomMenuValue();
+                                },
+                                text: "لا يوجد منتجات"),
                           ],
                         ),
                       );
@@ -127,5 +132,9 @@ class OutStoreProductScreen extends StatelessWidget {
               },
               fallback: (context) => widget ?? shimmer());
         }));
+
   }
+
+
 }
+

@@ -26,10 +26,15 @@ class LoginScreen extends StatelessWidget {
               key: 'token',
               value: state.loginModel.token,
             ).then((value) {
-              var userRole = state.loginModel.data!.roles;
+              userRole = state.loginModel.data!.roles;
+              token = state.loginModel.token;
+              userID = state.loginModel.data!.id;
               CacheHelper.saveData(key: "userRole", value: userRole)
                   .then((value) => {
-                        navigateToHomeScreen(userRole!, context),
+                        CacheHelper.saveData(key: "userID", value: userRole)
+                            .then((value) => {
+                                  navigateToHomeScreen(userRole!, context),
+                                }),
                       });
             });
           }

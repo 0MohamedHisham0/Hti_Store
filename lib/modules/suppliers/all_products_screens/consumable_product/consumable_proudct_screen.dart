@@ -59,12 +59,13 @@ class ConsumableProductScreen extends StatelessWidget {
             return ConditionalBuilder(
                 condition: cubit.listConsumerModel!.data!.data!.isEmpty,
                 builder: (context) {
+                  showToast(text: "لا توجد منتجات", state: ToastStates.WARNING);
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 50,
+                          height: 30,
                         ),
                         errorWidgetWithRefresh(
                             onClicked: () {

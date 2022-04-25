@@ -102,7 +102,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   return ConditionalBuilder(
                       condition: state is ProductDetailsErrorState,
                       builder: (context) {
-                        return errorWidget("لا يوجد معلومات لهذا المنتج حاليا");
+                        return Center(child: errorWidget("لا يوجد معلومات لهذا المنتج حاليا"));
                       },
                       fallback: (context) {
                         return shimmer();

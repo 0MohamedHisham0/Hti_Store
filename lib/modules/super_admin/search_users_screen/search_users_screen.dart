@@ -129,7 +129,7 @@ class SearchUsersScreen extends StatelessWidget {
                                         onClicked: () {
                                           navigateTo(
                                               context,
-                                              UserProfile(cubit.listUsers!
+                                              UserProfile(false ,cubit.listUsers!
                                                   .result!.data![index].id!));
                                         },
                                         onDeleteClicked: () {

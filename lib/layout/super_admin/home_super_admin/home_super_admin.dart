@@ -26,7 +26,11 @@ class HomeSuperUserScreen extends StatelessWidget {
           var cubit = HomeSuperUserCubit.get(context);
           if (state is DeleteUserSuccessState) {
             cubit.getUsers(
-                translateRoleFromArabicToEnglish(cubit.dropDownValue), "", "", "", "");
+                translateRoleFromArabicToEnglish(cubit.dropDownValue),
+                "",
+                "",
+                "",
+                "");
           }
           if (state is DeleteUserErrorState) {
             showToast(
@@ -63,7 +67,8 @@ class HomeSuperUserScreen extends StatelessWidget {
           if (state is ChangeDropDownMenu) {
             print(state.role);
             print(translateRoleFromArabicToEnglish(state.role));
-            cubit.getUsers(translateRoleFromArabicToEnglish(state.role), "", "", "", "");
+            cubit.getUsers(
+                translateRoleFromArabicToEnglish(state.role), "", "", "", "");
           }
         },
         builder: (context, state) {
@@ -78,6 +83,10 @@ class HomeSuperUserScreen extends StatelessWidget {
                       onPressed: () => navigateTo(context, SearchUsersScreen()),
                       icon: const Icon(Icons.search)),
 
+                  IconButton(
+                      onPressed: () =>
+                          navigateTo(context, UserProfile(false, userID ?? 0)),
+                      icon: const Icon(Icons.person)),
                   IconButton(
                       onPressed: () => signOut(context),
                       icon: const Icon(Icons.logout)),
@@ -120,8 +129,10 @@ class HomeSuperUserScreen extends StatelessWidget {
                                     onClicked: () {
                                       navigateTo(
                                           context,
-                                          UserProfile(cubit.listUsers!.result!
-                                              .data![index].id!));
+                                          UserProfile(
+                                              false,
+                                              cubit.listUsers!.result!
+                                                  .data![index].id!));
                                     },
                                     onDeleteClicked: () {
                                       showDialog(
@@ -201,11 +212,10 @@ class HomeSuperUserScreen extends StatelessWidget {
                                             onClicked: () {
                                               navigateTo(
                                                   context,
-                                                  UserProfile(cubit
-                                                      .listUsers!
-                                                      .result!
-                                                      .data![index]
-                                                      .id!));
+                                                  UserProfile(
+                                                      false,
+                                                      cubit.listUsers!.result!
+                                                          .data![index].id!));
                                             },
                                             onDeleteClicked: () {
                                               cubit.deleteUser(cubit.listUsers!

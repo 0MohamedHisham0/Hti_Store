@@ -1,29 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:hti_store/layout/addtion_offcial/cubit/cubit.dart';
-import 'package:hti_store/layout/addtion_offcial/cubit/states.dart';
-import 'package:hti_store/layout/suppliers/home_suppliers/cubit/cubit.dart';
-import 'package:hti_store/layout/suppliers/home_suppliers/cubit/states.dart';
-import 'package:hti_store/modules/suppliers/add_new_product/add_new_product_screen.dart';
-
-import '../../modules/super_admin/search_users_screen/search_users_screen.dart';
-import '../../shared/components/components.dart';
+import 'package:hti_store/layout/store_keeper/cubit/cubit.dart';
+import 'package:hti_store/layout/store_keeper/cubit/states.dart';
+import 'package:hti_store/modules/search_product/search_product_screen.dart';
+import 'package:hti_store/shared/components/components.dart';
 import '../../shared/components/constants.dart';
-import '../../shared/styles/colors.dart';
 
-class AdditionOfficialScreen extends StatelessWidget {
-  const AdditionOfficialScreen({Key? key}) : super(key: key);
+class HomeStoreKeeper extends StatelessWidget {
+  const HomeStoreKeeper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => AdditionOfficialCubit(),
-        child: BlocConsumer<AdditionOfficialCubit, AdditionOfficialStates>(
+    return  BlocProvider(
+        create: (context) => StoreKeeperCubit(),
+        child: BlocConsumer<StoreKeeperCubit, StoreKeeperStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            var cubit = AdditionOfficialCubit.get(context);
+            var cubit = StoreKeeperCubit.get(context);
 
             return Scaffold(
               appBar: AppBar(
@@ -32,6 +25,9 @@ class AdditionOfficialScreen extends StatelessWidget {
                   IconButton(
                       onPressed: () => signOut(context),
                       icon: const Icon(Icons.logout)),
+                  IconButton(
+                      onPressed: () => navigateTo(context, const SearchProductsScreen()),
+                      icon: const Icon(Icons.search)),
                 ],
               ),
               bottomNavigationBar: BottomNavigationBar(

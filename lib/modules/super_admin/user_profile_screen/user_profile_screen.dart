@@ -10,9 +10,10 @@ import 'package:hti_store/shared/components/components.dart';
 import 'cubit/cubit.dart';
 
 class UserProfile extends StatelessWidget {
-  const UserProfile(this.id, {Key? key}) : super(key: key);
+  const UserProfile(this.isBottomNav, this.id, {Key? key}) : super(key: key);
 
   final int id;
+  final bool isBottomNav;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,9 @@ class UserProfile extends StatelessWidget {
           var cubit = UserProfileCubit.get(context);
           double width = 20.0;
           return Scaffold(
-              appBar: AppBar(
+              appBar: isBottomNav
+                  ? AppBar()
+                  : AppBar(
                 title: const Text(
                   "بيانات الموظف",
                   style: TextStyle(fontSize: 25),
@@ -78,9 +81,11 @@ class UserProfile extends StatelessWidget {
                                   type: RoleStates
                                       .values[cubit.valueRole.index].name,
                                   section: SectionStates
-                                      .values[cubit.valueSection.index].name,
+                                      .values[cubit.valueSection.index]
+                                      .name,
                                   branch: BranchStates
-                                      .values[cubit.valueBranch.index].name,
+                                      .values[cubit.valueBranch.index]
+                                      .name,
                                 );
                               },
                               onPressedCancel: () {
@@ -101,7 +106,7 @@ class UserProfile extends StatelessWidget {
                             return dialog(
                                 title: "حذف موظف",
                                 content:
-                                    "هل انت متاكد من انك تريد حذف هذا الموظف؟",
+                                "هل انت متاكد من انك تريد حذف هذا الموظف؟",
                                 onPressedDone: () {
                                   if (cubit.userData!.id != null &&
                                       cubit.userData!.id != 0) {

@@ -10,6 +10,7 @@ class BoardingModel {
   final String title;
   final String body;
 
+
   BoardingModel({
     required this.title,
     required this.image,
@@ -23,6 +24,7 @@ class OnBoardingScreen extends StatefulWidget {
   @override
   _OnBoardingScreenState createState() => _OnBoardingScreenState();
 }
+
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   var boardController = PageController();

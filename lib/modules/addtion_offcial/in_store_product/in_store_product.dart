@@ -1,5 +1,4 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hti_store/modules/addtion_offcial/in_store_product/cubit/cubit.dart';
@@ -12,8 +11,7 @@ class InStoreProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RefreshController _refreshController =
-        RefreshController(initialRefresh: false);
+    RefreshController _refreshController = RefreshController(initialRefresh: false);
     Widget? widget;
 
     return BlocProvider(
@@ -66,6 +64,7 @@ class InStoreProductScreen extends StatelessWidget {
                           .data!
                           .isEmpty,
                       builder: (context) {
+                        showToast(text: "لا يوجد منتجات حاليا", state: ToastStates.WARNING);
                         return Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -79,7 +78,11 @@ class InStoreProductScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 50,
                               ),
-                              errorWidget('لا يوحد منتجات'),
+                              errorWidgetWithRefresh(
+                                  onClicked: () {
+                                    cubit.getProductsFromBottomMenuValue();
+                                  },
+                                  text: "لا يوجد منتجات"),
                             ],
                           ),
                         );
@@ -107,4 +110,5 @@ class InStoreProductScreen extends StatelessWidget {
           );
         }));
   }
+
 }

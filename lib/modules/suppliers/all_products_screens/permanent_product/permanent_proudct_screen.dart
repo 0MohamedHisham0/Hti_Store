@@ -16,7 +16,6 @@ class PermanentProductScreen extends StatelessWidget {
     Widget? widget;
     return BlocConsumer<AllProductsCubit, AllProductsStates>(
         listener: (context, state) {
-
       var cubit = AllProductsCubit.get(context);
 
       if (state is AllProductsErrorState) {
@@ -53,19 +52,41 @@ class PermanentProductScreen extends StatelessWidget {
           refreshController: _refreshController,
         );
       }
-
     }, builder: (context, state) {
       var cubit = AllProductsCubit.get(context);
+
       return ConditionalBuilder(
           condition: cubit.listPermanentModel != null,
           builder: (context) {
-            return productsScreen(
-              cubit.listPermanentModel!.data!.data,
-              onRefresh: () {
-                cubit.getPermanentProducts();
-              },
-              refreshController: _refreshController,
-            );
+            return ConditionalBuilder(
+                condition: cubit.listPermanentModel!.data!.data!.isEmpty,
+                builder: (context) {
+                  showToast(text: "لا يوجد منتجات حاليا", state: ToastStates.WARNING);
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        errorWidgetWithRefresh(
+                            onClicked: () {
+                              cubit.getConsumerProducts();
+                            },
+                            text: "لا يوجد منتجات"),
+                      ],
+                    ),
+                  );
+                },
+                fallback: (context) {
+                  return productsScreen(
+                    cubit.listPermanentModel!.data!.data,
+                    onRefresh: () {
+                      cubit.getPermanentProducts();
+                    },
+                    refreshController: _refreshController,
+                  );
+                });
           },
           fallback: (context) => widget ?? shimmer());
     });

@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,6 +14,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../models/product_model.dart';
+import '../network/local/cache_helper.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -415,33 +417,40 @@ Widget productItemWithAcceptButtons({
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          onAcceptClicked();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
-                          elevation: 3,
-                        ),
-                        child: const Text("قبول"),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          onRejectClicked();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          elevation: 3,
-                        ),
-                        child: const Text("رفض"),
-                      ),
-                    ],
-                  )
+                  ConditionalBuilder(
+                      condition: CacheHelper.getData(key: "userRole") != "SUPERVISORYOFFICER",
+                      builder: (context) {
+                        return Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                onAcceptClicked();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green,
+                                elevation: 3,
+                              ),
+                              child: const Text("قبول"),
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                onRejectClicked();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                elevation: 3,
+                              ),
+                              child: const Text("رفض"),
+                            ),
+                          ],
+                        );
+                      },
+                      fallback: (context) {
+                        return Container();
+                      })
                 ],
               ),
             ),
@@ -1300,7 +1309,7 @@ Widget defaultText(
 
 Widget errorWidgetWithRefresh({
   required Function onClicked,
-   String text = "هناك مشكله حاول مره اخري",
+  String text = "هناك مشكله حاول مره اخري",
 }) =>
     Center(
       child: Column(
@@ -1310,7 +1319,7 @@ Widget errorWidgetWithRefresh({
                 onClicked();
               },
               icon: const Icon(Icons.refresh)),
-           Text(text),
+          Text(text),
         ],
       ),
     );

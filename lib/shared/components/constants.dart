@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hti_store/layout/store_keeper/home_store_keeper.dart';
 import 'package:hti_store/layout/suppliers/home_suppliers/home_suppliers.dart';
 import 'package:hti_store/modules/login/login_screen.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
@@ -13,19 +14,31 @@ void navigateToHomeScreen(String role, BuildContext context) {
     case 'ADMIN':
       navigateAndFinish(
         context,
-        HomeSuperUserScreen(),
+        const HomeSuperUserScreen(),
       );
       break;
     case 'SUPPLIERS':
       navigateAndFinish(
         context,
-        HomeSuppliersScreen(),
+        const HomeSuppliersScreen(),
       );
       break;
     case 'ADDITIONOFFICIAL':
       navigateAndFinish(
         context,
-        AdditionOfficialScreen(),
+        const AdditionOfficialScreen(),
+      );
+      break;
+    case 'SUPERVISORYOFFICER':
+      navigateAndFinish(
+        context,
+        const AdditionOfficialScreen(),
+      );
+      break;
+    case 'STOREKEPPER':
+      navigateAndFinish(
+        context,
+        const HomeStoreKeeper(),
       );
       break;
     default:
@@ -39,11 +52,16 @@ void navigateToHomeScreen(String role, BuildContext context) {
 Widget getHomeScreen(String role) {
   switch (role) {
     case 'ADMIN':
-      return HomeSuperUserScreen();
+      return const HomeSuperUserScreen();
     case 'SUPPLIERS':
-      return HomeSuppliersScreen();
+      return const HomeSuppliersScreen();
     case 'ADDITIONOFFICIAL':
-      return AdditionOfficialScreen();
+      return const AdditionOfficialScreen();
+    case 'SUPERVISORYOFFICER':
+      return const AdditionOfficialScreen();
+
+    case 'STOREKEPPER':
+      return const HomeStoreKeeper();
     default:
       return LoginScreen();
   }
@@ -61,14 +79,24 @@ void signOut(BuildContext context) {
 }
 
 String changeDateFormat(String date) {
-  DateTime parseDate =
-  DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+  DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
   var inputDate = DateTime.parse(parseDate.toString());
   var outputFormat = DateFormat('MM/dd/yyyy hh:mm a');
   var outputDate = outputFormat.format(inputDate);
 
-  return outputDate.contains("AM") ?  outputDate.replaceAll("AM", "ص") : outputDate.replaceAll("PM", "م");
+  return outputDate.contains("AM")
+      ? outputDate.replaceAll("AM", "ص")
+      : outputDate.replaceAll("PM", "م");
 }
+
+// get corona data api
+String getCoronaDataApi() {
+  return "https://corona.lmao.ninja/v2/all";
+}
+
+String? userRole;
+String? token;
+int? userID;
 
 // enum RoleStates {
 //   ADMIN,
