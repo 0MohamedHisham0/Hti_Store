@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 
 import '../../layout/addtion_offcial/home_addtion_offcial.dart';
 import '../../layout/super_admin/home_super_admin/home_super_admin.dart';
+import '../../models/create_order_model.dart';
+import '../../models/orders_model.dart';
 import 'components.dart';
 
 void navigateToHomeScreen(String role, BuildContext context) {
@@ -107,6 +109,10 @@ String getCoronaDataApi() {
 String? userRole;
 String? token;
 int? userID;
+
+List<OrderedProductsCreated> cartList = [];
+
+
 
 // enum RoleStates {
 //   ADMIN,

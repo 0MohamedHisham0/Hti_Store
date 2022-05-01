@@ -25,7 +25,7 @@ Widget defaultButton({
   Color background = defaultColor,
   bool isUpperCase = true,
   double radius = 3.0,
-  required Function function,
+  required Function? function,
   required String text,
 }) =>
     Container(
@@ -33,7 +33,7 @@ Widget defaultButton({
       height: 50.0,
       child: ElevatedButton(
         onPressed: () {
-          function();
+          function!();
         },
         style: ElevatedButton.styleFrom(
           primary: background,

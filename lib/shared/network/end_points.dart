@@ -17,4 +17,5 @@ const ACCEPT_PRODUCT_TO_STORE = 'store/add-product-to-store';
 const GET_ORDERS = 'order/getOrders';
 const UPDATE_OREDER_STATE = 'order/update';
 const GET_ORDER_BY_ID = 'order/getorder';
+const CREATE_ORDER = 'order/create';
 

@@ -11,7 +11,7 @@ class OrdersModel {
     if (json['data'] != null) {
       data = <OrderData>[];
       json['data'].forEach((v) {
-        data!.add(new OrderData.fromJson(v));
+        data!.add(OrderData.fromJson(v));
       });
     }
   }
@@ -60,6 +60,22 @@ class OrderData {
     whoAcceptOrder = json['whoAcceptOrder'];
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.orderedProducts != null) {
+      data['orderedProducts'] = this.orderedProducts?.map((v) => v.toJson()).toList();
+    }
+    data['branch'] = this.branch;
+    data['acceptFromManagerStore'] = this.acceptFromManagerStore;
+    data['notes'] = this.notes;
+    data['dateOfOrder'] = this.dateOfOrder;
+    data['dateOfsent'] = this.dateOfsent;
+    data['userId'] = this.userId;
+    data['whoCreatedOrder'] = this.whoCreatedOrder;
+    data['whoAcceptOrder'] = this.whoAcceptOrder;
+    return data;
+  }
 
 }
 
@@ -76,4 +92,12 @@ class OrderedProducts {
     productname = json['productname'];
   }
 
+  // to jason
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['count'] = this.count;
+    data['productname'] = this.productname;
+    return data;
+  }
 }

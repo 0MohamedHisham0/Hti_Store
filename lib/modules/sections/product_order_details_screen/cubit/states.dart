@@ -1,5 +1,6 @@
 import 'package:hti_store/models/login_model.dart';
 
+import '../../../../models/orders_model.dart';
 import '../../../../models/product_model.dart';
 
 abstract class ProductOrderDetailsStates {}

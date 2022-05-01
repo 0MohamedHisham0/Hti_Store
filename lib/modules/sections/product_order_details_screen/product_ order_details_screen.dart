@@ -2,8 +2,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:counter/counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hti_store/models/orders_model.dart';
 import 'package:hti_store/shared/components/components.dart';
 
+import '../../../models/create_order_model.dart';
+import '../../../shared/components/constants.dart';
 import '../../suppliers/update_product/update_product.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
@@ -19,8 +22,7 @@ class ProductOrderDetailsScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (BuildContext context) =>
-      ProductOrderDetailsCubit()
-        ..getProductByID(id),
+          ProductOrderDetailsCubit()..getProductByID(id),
       child: BlocConsumer<ProductOrderDetailsCubit, ProductOrderDetailsStates>(
         listener: (context, state) {
           var cubit = ProductOrderDetailsCubit.get(context);
@@ -31,6 +33,7 @@ class ProductOrderDetailsScreen extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = ProductOrderDetailsCubit.get(context);
+          late OrderedProductsCreated orderedProducts;
 
           return Scaffold(
               appBar: AppBar(
@@ -57,17 +60,17 @@ class ProductOrderDetailsScreen extends StatelessWidget {
                         itemDetailRowWithDivider(
                             title: "اسم المورد",
                             value:
-                            "${cubit.productModel!.data!.nameofsupplier}",
+                                "${cubit.productModel!.data!.nameofsupplier}",
                             context: context),
                         itemDetailRowWithDivider(
                             title: "رقم المورد",
                             value:
-                            "${cubit.productModel!.data!.phoneofsupplier}",
+                                "${cubit.productModel!.data!.phoneofsupplier}",
                             context: context),
                         itemDetailRowWithDivider(
                             title: "اسم الشركه",
                             value:
-                            "${cubit.productModel!.data!.supplieredCompany}",
+                                "${cubit.productModel!.data!.supplieredCompany}",
                             context: context),
                         itemDetailRowWithDivider(
                             title: "النوع",
@@ -110,7 +113,8 @@ class ProductOrderDetailsScreen extends StatelessWidget {
                                                 cubit.orderCount + 1);
                                           } else {
                                             showToast(
-                                                text: "لا يمكنك طلب كميه اكثر من المتاحة",
+                                                text:
+                                                    "لا يمكنك طلب كميه اكثر من المتاحة",
                                                 state: ToastStates.WARNING);
                                           }
                                         },
@@ -155,7 +159,41 @@ class ProductOrderDetailsScreen extends StatelessWidget {
                                     height: 20,
                                   ),
                                   defaultButton(
-                                      function: () {}, text: "اضافه الي العربة")
+                                      function: () {
+                                        if (cubit.orderCount > 0) {
+                                          orderedProducts =
+                                              OrderedProductsCreated(
+                                            productname:
+                                                cubit.productModel!.data!.name!,
+                                            id: cubit.productModel!.data!.id
+                                                .toString(),
+                                            count: cubit.orderCount.toString(),
+                                          );
+                                          bool isExist = false;
+                                          cartList.forEach((element) {
+                                            if (element.id ==
+                                                orderedProducts.id) {
+                                              isExist = true;
+                                            }
+                                          });
+
+                                          if (!isExist) {
+                                            cartList.add(orderedProducts);
+                                            showToast(
+                                                text: "تم الاضافة الى السلة",
+                                                state: ToastStates.SUCCESS);
+                                          } else {
+                                            cartList.forEach((element) {
+                                              if (element.id == orderedProducts.id) {
+                                                element.count = orderedProducts.count;
+                                                showToast(text: "تم اضافه كميه جديده الي السلة", state: ToastStates.SUCCESS);
+                                              }
+
+                                            });
+                                          }
+                                        }
+                                      },
+                                      text: "اضافه الي العربة")
                                 ],
                               );
                             },
