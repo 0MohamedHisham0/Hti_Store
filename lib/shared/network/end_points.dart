@@ -14,3 +14,7 @@ const GET_PRODUCT_BY_ID = 'product/getByid';
 const UPDATE_PRODUCT_BY_ID = 'product/update';
 const GET_ALL_IN_STORE = 'store/hti-store';
 const ACCEPT_PRODUCT_TO_STORE = 'store/add-product-to-store';
+const GET_ORDERS = 'order/getOrders';
+const UPDATE_OREDER_STATE = 'order/update';
+const GET_ORDER_BY_ID = 'order/getorder';
+

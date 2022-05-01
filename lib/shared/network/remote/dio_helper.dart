@@ -41,6 +41,21 @@ class DioHelper {
       queryParameters: query,
     );
   }
+  static Future<Response> getDataWithoutToken({
+    required String url,
+    Map<String, dynamic>? query,
+  }) {
+
+    return dio.get(
+      url,
+      options: Options(
+        headers: {
+          'Content-Type':'application/json',
+        },
+      ),
+      queryParameters: query,
+    );
+  }
 
   static Future<Response> postData({
     required Map<String, dynamic> data,

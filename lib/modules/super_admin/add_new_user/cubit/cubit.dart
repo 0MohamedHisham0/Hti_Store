@@ -89,7 +89,7 @@ class AddUserCubit extends Cubit<AddUserStates> {
     emit(ChangeBranchState());
   }
 
-  void changeSection(SectionStates value) {
+  void changeSection(SectionStatesEnum value) {
     valueSection = value;
     emit(ChangeSectionState());
   }

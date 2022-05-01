@@ -45,7 +45,7 @@ class UserProfile extends StatelessWidget {
             Navigator.pop(context);
             navigateAndFinish(
                 context,
-                HomeSuperUserScreen(
+                const HomeSuperUserScreen(
                   text: "From User Profile",
                 ));
             showToast(text: "تم حذف الموظف بنجاح", state: ToastStates.SUCCESS);
@@ -80,7 +80,7 @@ class UserProfile extends StatelessWidget {
                                 cubit.updateUserRole(
                                   type: RoleStates
                                       .values[cubit.valueRole.index].name,
-                                  section: SectionStates
+                                  section: SectionStatesEnum
                                       .values[cubit.valueSection.index]
                                       .name,
                                   branch: BranchStates

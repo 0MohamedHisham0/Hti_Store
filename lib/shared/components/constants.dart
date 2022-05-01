@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hti_store/layout/sections/home_store_keeper.dart';
 import 'package:hti_store/layout/store_keeper/home_store_keeper.dart';
 import 'package:hti_store/layout/suppliers/home_suppliers/home_suppliers.dart';
 import 'package:hti_store/modules/login/login_screen.dart';
@@ -38,7 +39,13 @@ void navigateToHomeScreen(String role, BuildContext context) {
     case 'STOREKEPPER':
       navigateAndFinish(
         context,
-        const HomeStoreKeeper(),
+        const HomeStoreKeeperScreen(),
+      );
+      break;
+    case 'SECTION':
+      navigateAndFinish(
+        context,
+        const HomeSectionScreen(),
       );
       break;
     default:
@@ -59,9 +66,12 @@ Widget getHomeScreen(String role) {
       return const AdditionOfficialScreen();
     case 'SUPERVISORYOFFICER':
       return const AdditionOfficialScreen();
-
     case 'STOREKEPPER':
-      return const HomeStoreKeeper();
+      return const HomeStoreKeeperScreen();
+    case 'STOREMANAGER':
+      return const HomeStoreKeeperScreen();
+    case 'SECTION':
+      return const HomeSectionScreen();
     default:
       return LoginScreen();
   }

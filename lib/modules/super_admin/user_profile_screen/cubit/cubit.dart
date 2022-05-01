@@ -23,10 +23,8 @@ class UserProfileCubit extends Cubit<UserProfileStates> {
   void getUserByID(int id) {
     emit(UserProfileLoadingState());
 
-    DioHelper.getData(
+    DioHelper.getDataWithoutToken(
       url: GET_USER_BY_ID + "/$id",
-      token: CacheHelper.getData(key: "token"),
-      query: {},
     )
         .then((value) => {
               if (value.statusCode == 200)

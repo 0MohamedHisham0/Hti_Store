@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/layout/store_keeper/cubit/states.dart';
-import 'package:hti_store/modules/addtion_offcial/in_store_product/in_store_product.dart';
+import 'package:hti_store/layout/sections/cubit/states.dart';
 import 'package:hti_store/modules/orders/orders_screen/orders_screen.dart';
 import 'package:hti_store/modules/super_admin/user_profile_screen/user_profile_screen.dart';
-import '../../../modules/addtion_offcial/out_store_product/out_store_product.dart';
+import '../../../modules/sections/in_store_product_section/in_store_product.dart';
 import '../../../shared/components/constants.dart';
 
-class StoreKeeperCubit extends Cubit<StoreKeeperStates> {
-  StoreKeeperCubit() : super(StoreKeeperInitialState());
+class SectionCubit extends Cubit<SectionStates> {
+  SectionCubit() : super(SectionInitialState());
 
-  static StoreKeeperCubit get(context) => BlocProvider.of(context);
+  static SectionCubit get(context) => BlocProvider.of(context);
 
   int currentScreenIndex = 0;
 
   List<Widget> screens = [
-    const InStoreProductScreen(),
+    const InStoreProductSectionScreen(),
     const OrderScreen(),
     UserProfile(true, userID ?? 0),
   ];

@@ -1,10 +1,13 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hti_store/models/orders_model.dart';
+import 'package:hti_store/modules/orders/orders_screen/cubit/cubit.dart';
 import 'package:hti_store/modules/super_admin/add_new_user/cubit/cubit.dart';
 import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/cubit.dart';
 import 'package:hti_store/modules/suppliers/product_details_screen/product_details_screen.dart';
@@ -14,6 +17,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../models/product_model.dart';
+import '../../modules/orders/order_details/order_details_screen.dart';
 import '../network/local/cache_helper.dart';
 
 Widget defaultButton({
@@ -109,8 +113,8 @@ Widget defaultFormField({
 
 Widget myDivider() => Container(
       width: double.infinity,
-      height: 1.0,
-      color: Colors.grey[300],
+      height: 0.3,
+      color: defaultColor,
     );
 
 Future navigateTo(context, widget) => Navigator.push(
@@ -334,6 +338,166 @@ Widget productItem({
       ));
 }
 
+Widget orderItem({
+  required OrdersModel ordersModel,
+  required int index,
+  required Function onDetailClicked,
+  required Function onItemClicked,
+  required Function onAcceptClicked,
+  required Function onRejectClicked,
+  IconData icon = Icons.chair,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10), // <-
+      color: HexColor("CFCEDF"),
+// - Radius
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Wrap(children: <Widget>[
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ordersModel.data![index].notes!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: defaultColor),
+                  ),
+                  Text(
+                    "عدد الطلبات : " +
+                        ordersModel.data![index].orderedProducts!.length
+                            .toString(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  myDivider(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "وقت الطلب : " +
+                        changeDateFormat(
+                          ordersModel.data![index].dateOfOrder!,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
+                  Text(
+                    "اسم الطالب : " +
+                        ordersModel.data![index].whoCreatedOrder.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
+                  ConditionalBuilder(
+                      condition: ordersModel.data![index].acceptFromManagerStore
+                              .toString() ==
+                          "ACCEPTED",
+                      builder: (context) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "وقت القبول : " +
+                                  changeDateFormat(
+                                    ordersModel.data![index].dateOfOrder
+                                        .toString(),
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 13, color: Colors.grey[600]),
+                            ),
+                            Text(
+                              "امين المخزن : " +
+                                  ordersModel.data![index].whoAcceptOrder
+                                      .toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 13, color: Colors.grey[600]),
+                            ),
+                          ],
+                        );
+                      },
+                      fallback: (context) {
+                        return Container();
+                      }),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        onDetailClicked();
+                      },
+                      child: const Text("تفاصيل الطلب"),
+                    ),
+                  ),
+                  ConditionalBuilder(
+                      condition: ordersModel.data![index].acceptFromManagerStore
+                              .toString() ==
+                          "PENDING",
+                      builder: (context) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    onAcceptClicked();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.green,
+                                    elevation: 3,
+                                  ),
+                                  child: const Text("قبول"),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    onRejectClicked();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                    elevation: 3,
+                                  ),
+                                  child: const Text("رفض"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      fallback: (context) {
+                        return Container();
+                      }),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ]),
+    ),
+  );
+}
+
 Widget productItemWithAcceptButtons({
   required String productName,
   required String productDate,
@@ -418,7 +582,8 @@ Widget productItemWithAcceptButtons({
                     maxLines: 1,
                   ),
                   ConditionalBuilder(
-                      condition: CacheHelper.getData(key: "userRole") != "SUPERVISORYOFFICER",
+                      condition: CacheHelper.getData(key: "userRole") !=
+                          "SUPERVISORYOFFICER",
                       builder: (context) {
                         return Row(
                           children: [
@@ -816,22 +981,22 @@ String translateBranchStates(BranchStates state) {
   return branchInArabic;
 }
 
-enum SectionStates { CS, BIS, ENG, DEFAULT }
+enum SectionStatesEnum { CS, BIS, ENG, DEFAULT }
 
-String translateSectionStates(SectionStates state) {
+String translateSectionStates(SectionStatesEnum state) {
   String sectionInArabic;
 
   switch (state) {
-    case SectionStates.CS:
+    case SectionStatesEnum.CS:
       sectionInArabic = "علوم حاسب";
       break;
-    case SectionStates.BIS:
+    case SectionStatesEnum.BIS:
       sectionInArabic = " قسم إدارة الأعمال التكنولوجية و المعلومات";
       break;
-    case SectionStates.ENG:
+    case SectionStatesEnum.ENG:
       sectionInArabic = "العاشر من رمضان";
       break;
-    case SectionStates.DEFAULT:
+    case SectionStatesEnum.DEFAULT:
       sectionInArabic = "لم يتم تحديد قسم";
       break;
   }
@@ -841,20 +1006,29 @@ String translateSectionStates(SectionStates state) {
 Widget shimmer() => Center(
       child: SizedBox(
         width: 200.0,
-        height: 100.0,
-        child: Shimmer.fromColors(
-          baseColor: defaultColor,
-          highlightColor: Colors.white,
-          child: const Text(
-            'يتم الان تحميل البيانات',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
+        height: 200.0,
+        child: Column(
+          children: [
+            progressLoading(),
+            Shimmer.fromColors(
+              baseColor: defaultColor,
+              highlightColor: Colors.white,
+              child: const Text(
+                'يتم الان تحميل البيانات',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
+    );
+
+Widget progressLoading() => const SpinKitDoubleBounce(
+      color: defaultColor,
     );
 
 Widget errorWidget(String error) => Center(
@@ -923,12 +1097,12 @@ List<BranchStates> getBranches() {
   return branches;
 }
 
-List<SectionStates> getSections() {
-  List<SectionStates> sections = [];
-  sections.add((SectionStates.CS));
-  sections.add((SectionStates.BIS));
-  sections.add((SectionStates.ENG));
-  sections.add((SectionStates.DEFAULT));
+List<SectionStatesEnum> getSections() {
+  List<SectionStatesEnum> sections = [];
+  sections.add((SectionStatesEnum.CS));
+  sections.add((SectionStatesEnum.BIS));
+  sections.add((SectionStatesEnum.ENG));
+  sections.add((SectionStatesEnum.DEFAULT));
   return sections;
 }
 
@@ -1031,7 +1205,7 @@ Widget dialogAddRole({
                   borderRadius: BorderRadius.circular(5),
                 ),
                 width: double.infinity,
-                child: DropdownButton<SectionStates>(
+                child: DropdownButton<SectionStatesEnum>(
                   alignment: Alignment.center,
                   menuMaxHeight: 200,
                   underline: Container(
@@ -1040,8 +1214,8 @@ Widget dialogAddRole({
                   ),
                   borderRadius: BorderRadius.circular(10),
                   value: cubit.valueSection,
-                  items: getSections().map((SectionStates value) {
-                    return DropdownMenuItem<SectionStates>(
+                  items: getSections().map((SectionStatesEnum value) {
+                    return DropdownMenuItem<SectionStatesEnum>(
                       alignment: Alignment.center,
                       value: value,
                       child: Text(translateSectionStates(value)),
@@ -1049,7 +1223,7 @@ Widget dialogAddRole({
                   }).toList(),
                   onChanged: (newValue) {
                     setState(() {
-                      cubit.changeSection(newValue as SectionStates);
+                      cubit.changeSection(newValue as SectionStatesEnum);
                     });
                   },
                 ),
@@ -1108,6 +1282,50 @@ Widget productsScreen(List<ProductData>? list,
               return const SizedBox(height: 12);
             },
             itemCount: list!.length),
+      ),
+    ),
+  );
+}
+
+Widget ordersScreen(OrdersModel? orderModel,
+    {required Function onRefresh,
+    required RefreshController refreshController,
+    required OrdersCubit cubit}) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+      child: SmartRefresher(
+        enablePullDown: true,
+        header: const WaterDropHeader(),
+        onRefresh: () {
+          onRefresh();
+        },
+        controller: refreshController,
+        child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return orderItem(
+                ordersModel: orderModel!,
+                index: index,
+                onDetailClicked: () {
+                  navigateTo(context,
+                      OrderDetailsScreen(orderModel.data![index].id ?? 0));
+                },
+                onItemClicked: () {},
+                onAcceptClicked: () {
+                  cubit.updateOrderState(
+                      orderModel.data![index].id.toString(), "ACCEPTED");
+                },
+                onRejectClicked: () {
+                  cubit.updateOrderState(
+                      orderModel.data![index].id.toString(), "NOTFOUND");
+                },
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 10);
+            },
+            itemCount: orderModel!.data!.length),
       ),
     ),
   );
@@ -1219,6 +1437,8 @@ Widget productsScreenWithBottomMenu(List<ProductData>? list,
   );
 }
 
+
+
 Widget itemDetailRowWithDivider(
     {required String title,
     required String value,
@@ -1265,7 +1485,9 @@ Widget itemDetailRow(
     {required String title,
     required String value,
     required context,
-    double width = 20.0}) {
+    double width = 20.0,
+    double textSize = 18.0,
+    Color color = Colors.black}) {
   return Row(
     children: [
       SizedBox(
@@ -1273,7 +1495,7 @@ Widget itemDetailRow(
         child: Text(
           title,
           style: GoogleFonts.outfit(
-              textStyle: Theme.of(context).textTheme.bodyText1!),
+              textStyle: Theme.of(context).textTheme.bodyText1!,color: color,fontSize: textSize),
         ),
       ),
       SizedBox(
@@ -1285,7 +1507,7 @@ Widget itemDetailRow(
           textStyle: Theme.of(context)
               .textTheme
               .bodyText1!
-              .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+              .copyWith(fontWeight: FontWeight.normal, fontSize: textSize ,color: color),
         ),
       ),
     ],
@@ -1323,3 +1545,51 @@ Widget errorWidgetWithRefresh({
         ],
       ),
     );
+
+enum OrderStatus {
+  ACCEPTED,
+  PENDING,
+  NOTFOUND,
+}
+
+// translate order status to string
+String orderStatusToArabic(OrderStatus status) {
+  switch (status) {
+    case OrderStatus.ACCEPTED:
+      return "تم التأكيد";
+    case OrderStatus.PENDING:
+      return "قيد الانتظار";
+    case OrderStatus.NOTFOUND:
+      return "لم يتم العثور علي الطلب";
+    default:
+      return "";
+  }
+}
+
+// translate string to order status
+OrderStatus orderStatusFromArabic(String status) {
+  switch (status) {
+    case "تم التأكيد":
+      return OrderStatus.ACCEPTED;
+    case "قيد الانتظار":
+      return OrderStatus.PENDING;
+    case "لم يتم العثور علي الطلب":
+      return OrderStatus.NOTFOUND;
+    default:
+      return OrderStatus.NOTFOUND;
+  }
+}
+
+// translate string to order status
+String stringOrderStateFromArabic(String status) {
+  switch (status) {
+    case "تم التأكيد":
+      return "ACCEPTED";
+    case "قيد الانتظار":
+      return "PENDING";
+    case "لم يتم العثور علي الطلب":
+      return "NOTFOUND";
+    default:
+      return "NOTFOUND";
+  }
+}

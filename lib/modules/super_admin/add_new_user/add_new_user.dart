@@ -46,7 +46,7 @@ class AddNewUserScreen extends StatelessWidget {
                                     cubit.updateUserRole(
                                       type: RoleStates
                                           .values[cubit.valueRole.index].name,
-                                      section: SectionStates
+                                      section: SectionStatesEnum
                                           .values[cubit.valueSection.index]
                                           .name,
                                       branch: BranchStates

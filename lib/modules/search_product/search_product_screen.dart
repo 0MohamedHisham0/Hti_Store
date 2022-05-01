@@ -5,7 +5,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:hti_store/modules/search_product/cubit/cubit.dart';
 import 'package:hti_store/modules/search_product/cubit/states.dart';
 import 'package:hti_store/modules/suppliers/product_details_screen/product_details_screen.dart';
-import 'package:hti_store/shared/components/constants.dart';
 import '../../../shared/components/components.dart';
 
 class SearchProductsScreen extends StatelessWidget {
@@ -153,4 +152,5 @@ class SearchProductsScreen extends StatelessWidget {
           );
         }));
   }
+
 }

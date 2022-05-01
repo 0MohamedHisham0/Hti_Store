@@ -1,22 +1,25 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/layout/store_keeper/cubit/cubit.dart';
-import 'package:hti_store/layout/store_keeper/cubit/states.dart';
-import 'package:hti_store/modules/search_product/search_product_screen.dart';
-import 'package:hti_store/shared/components/components.dart';
-import '../../shared/components/constants.dart';
 
-class HomeStoreKeeperScreen extends StatelessWidget {
-  const HomeStoreKeeperScreen({Key? key}) : super(key: key);
+import '../../modules/search_product/search_product_screen.dart';
+import '../../shared/components/components.dart';
+import '../../shared/components/constants.dart';
+import 'cubit/cubit.dart';
+import 'cubit/states.dart';
+
+class HomeSectionScreen extends StatelessWidget {
+  const HomeSectionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => StoreKeeperCubit(),
-        child: BlocConsumer<StoreKeeperCubit, StoreKeeperStates>(
+        create: (context) => SectionCubit(),
+
+        child: BlocConsumer<SectionCubit, SectionStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            var cubit = StoreKeeperCubit.get(context);
+            var cubit = SectionCubit.get(context);
 
             return Scaffold(
               appBar: AppBar(

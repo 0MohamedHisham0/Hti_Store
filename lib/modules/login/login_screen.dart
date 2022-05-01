@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
               userID = state.loginModel.data!.id;
               CacheHelper.saveData(key: "userRole", value: userRole)
                   .then((value) => {
-                        CacheHelper.saveData(key: "userID", value: userRole)
+                        CacheHelper.saveData(key: "userID", value: userID)
                             .then((value) => {
                                   navigateToHomeScreen(userRole!, context),
                                 }),
@@ -147,8 +147,7 @@ class LoginScreen extends StatelessWidget {
                             text: 'تسجيل الدخول',
                             isUpperCase: true,
                           ),
-                          fallback: (context) =>
-                              const Center(child: CircularProgressIndicator()),
+                          fallback: (context) => progressLoading(),
                         ),
                         const SizedBox(
                           height: 15.0,
