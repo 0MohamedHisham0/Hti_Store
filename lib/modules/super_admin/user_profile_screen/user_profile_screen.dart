@@ -6,7 +6,10 @@ import 'package:hti_store/layout/super_admin/home_super_admin/home_super_admin.d
 import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/states.dart';
 
 import 'package:hti_store/shared/components/components.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../shared/styles/colors.dart';
+import '../../orders/order_details/order_details_screen.dart';
 import 'cubit/cubit.dart';
 
 class UserProfile extends StatelessWidget {
@@ -17,6 +20,8 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RefreshController _refreshController =
+        RefreshController(initialRefresh: false);
     return BlocProvider(
       create: (BuildContext context) => UserProfileCubit()..getUserByID(id),
       child: BlocConsumer<UserProfileCubit, UserProfileStates>(
@@ -63,93 +68,158 @@ class UserProfile extends StatelessWidget {
           double width = 20.0;
           return Scaffold(
               appBar: isBottomNav
-                  ? AppBar()
+                  ? PreferredSize(
+                      preferredSize: const Size.fromHeight(0.0),
+                      child: AppBar())
                   : AppBar(
-                title: const Text(
-                  "بيانات الموظف",
-                  style: TextStyle(fontSize: 25),
-                ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => dialogAddRole(
-                              onPressedDone: () {
-                                cubit.updateUserRole(
-                                  type: RoleStates
-                                      .values[cubit.valueRole.index].name,
-                                  section: SectionStatesEnum
-                                      .values[cubit.valueSection.index]
-                                      .name,
-                                  branch: BranchStates
-                                      .values[cubit.valueBranch.index]
-                                      .name,
-                                );
-                              },
-                              onPressedCancel: () {
-                                Navigator.pop(context);
-                              },
-                              userCubit: cubit));
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red[900],
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return dialog(
-                                title: "حذف موظف",
-                                content:
-                                "هل انت متاكد من انك تريد حذف هذا الموظف؟",
-                                onPressedDone: () {
-                                  if (cubit.userData!.id != null &&
-                                      cubit.userData!.id != 0) {
-                                    cubit.deleteUser();
-                                  }
-                                },
-                                onPressedCancel: () {
-                                  Navigator.pop(context);
+                      title: const Text(
+                        "بيانات الموظف",
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      actions: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => dialogAddRole(
+                                    onPressedDone: () {
+                                      cubit.updateUserRole(
+                                        type: RoleStates
+                                            .values[cubit.valueRole.index].name,
+                                        section: SectionStatesEnum
+                                            .values[cubit.valueSection.index]
+                                            .name,
+                                        branch: BranchStates
+                                            .values[cubit.valueBranch.index]
+                                            .name,
+                                      );
+                                    },
+                                    onPressedCancel: () {
+                                      Navigator.pop(context);
+                                    },
+                                    userCubit: cubit));
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red[900],
+                          ),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return dialog(
+                                      title: "حذف موظف",
+                                      content:
+                                          "هل انت متاكد من انك تريد حذف هذا الموظف؟",
+                                      onPressedDone: () {
+                                        if (cubit.userData!.id != null &&
+                                            cubit.userData!.id != 0) {
+                                          cubit.deleteUser();
+                                        }
+                                      },
+                                      onPressedCancel: () {
+                                        Navigator.pop(context);
+                                      });
                                 });
-                          });
-                    },
-                  ),
-                ],
-              ),
+                          },
+                        ),
+                      ],
+                    ),
               body: ConditionalBuilder(
-                condition: state is UserProfileSuccessState,
+                condition: cubit.userData != null,
                 builder: (BuildContext context) {
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        itemDetailRow(
-                            title: "اسم الموظف",
-                            value: "${cubit.userData!.username}",
-                            context: context),
-                        itemDetailRowWithDivider(
-                            title: "البريد الالكتروني",
-                            value: "${cubit.userData!.email}",
-                            context: context),
-                        itemDetailRowWithDivider(
-                            title: "الوظيفه",
-                            value: translateRoleFromEnglishToArabic(
-                                cubit.userData!.roles.toString()),
-                            context: context),
-                        itemDetailRowWithDivider(
-                            title: "القسم",
-                            value: "${cubit.userData!.sections}",
-                            context: context),
-                        itemDetailRowWithDivider(
-                            title: "الفرع",
-                            value: "${cubit.userData!.branch}",
-                            context: context),
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          itemDetailRow(
+                              title: "اسم الموظف",
+                              value: "${cubit.userData!.username}",
+                              context: context),
+                          itemDetailRowWithDivider(
+                              title: "البريد الالكتروني",
+                              value: "${cubit.userData!.email}",
+                              context: context),
+                          itemDetailRowWithDivider(
+                              title: "الوظيفه",
+                              value: translateRoleFromEnglishToArabic(
+                                  cubit.userData!.roles.toString()),
+                              context: context),
+                          itemDetailRowWithDivider(
+                              title: "القسم",
+                              value: "${cubit.userData!.sections}",
+                              context: context),
+                          itemDetailRowWithDivider(
+                              title: "الفرع",
+                              value: "${cubit.userData!.branch}",
+                              context: context),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          myDivider(),
+
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text("الطلبات", style: TextStyle(fontSize: 20)),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ConditionalBuilder(
+                              condition: cubit.userData!.orders!.isNotEmpty,
+                              builder: (context) {
+                                return Column(
+                                  children: [
+                                    ListView.separated(
+                                        shrinkWrap: true,
+                                        physics: const BouncingScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          return orderItemOrderData(
+                                            ordersModel:
+                                                cubit.userData!.orders!,
+                                            index: index,
+                                            onDetailClicked: () {
+                                              navigateTo(
+                                                  context,
+                                                  OrderDetailsScreen(cubit
+                                                          .userData!
+                                                          .orders![index]
+                                                          .id ??
+                                                      0));
+                                            },
+                                            onItemClicked: () {},
+                                            onAcceptClicked: () {},
+                                            onRejectClicked: () {},
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return const SizedBox(height: 10);
+                                        },
+                                        itemCount:
+                                            cubit.userData!.orders!.length),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text(
+                                        "عدد الطلبات  " +
+                                            cubit.userData!.orders!.length
+                                                .toString(),
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                            fontSize: 13, color: Colors.grey),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                              fallback: (context) {
+                                return Container();
+                              }),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -168,4 +238,29 @@ class UserProfile extends StatelessWidget {
       ),
     );
   }
+
+  Widget itemSmallProduct(count, name, context) => Container(
+        decoration: BoxDecoration(
+            color: defaultColor, borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              itemDetailRow(
+                  title: "اسم المنتج",
+                  value: name,
+                  context: context,
+                  color: Colors.white,
+                  textSize: 14),
+              itemDetailRow(
+                  title: "الكميه المطلوبه",
+                  value: count.toString(),
+                  context: context,
+                  color: Colors.white,
+                  textSize: 14),
+            ],
+          ),
+        ),
+      );
 }

@@ -356,143 +356,328 @@ Widget orderItem({
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Wrap(children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    ordersModel.data![index].notes!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: defaultColor),
-                  ),
-                  Text(
-                    "عدد الطلبات : " +
-                        ordersModel.data![index].orderedProducts!.length
-                            .toString(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  myDivider(),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "وقت الطلب : " +
-                        changeDateFormat(
-                          ordersModel.data![index].dateOfOrder!,
-                        ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
-                  ),
-                  Text(
-                    "اسم الطالب : " +
-                        ordersModel.data![index].whoCreatedOrder.toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
-                  ),
-                  ConditionalBuilder(
-                      condition: ordersModel.data![index].acceptFromManagerStore
+        Stack(alignment: Alignment.topLeft, children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  backgroundColor: ordersModel
+                              .data![index].acceptFromManagerStore
                               .toString() ==
-                          "ACCEPTED",
-                      builder: (context) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "وقت القبول : " +
-                                  changeDateFormat(
-                                    ordersModel.data![index].dateOfOrder
-                                        .toString(),
-                                  ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 13, color: Colors.grey[600]),
-                            ),
-                            Text(
-                              "امين المخزن : " +
-                                  ordersModel.data![index].whoAcceptOrder
-                                      .toString(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 13, color: Colors.grey[600]),
-                            ),
-                          ],
-                        );
-                      },
-                      fallback: (context) {
-                        return Container();
-                      }),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        onDetailClicked();
-                      },
-                      child: const Text("تفاصيل الطلب"),
+                          "ACCEPTED"
+                      ? Colors.green
+                      : ordersModel.data![index].acceptFromManagerStore
+                                  .toString() ==
+                              "PENDING"
+                          ? Colors.yellow
+                          : Colors.red,
+                  radius: 7,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(ordersModel.data![index].acceptFromManagerStore
+                            .toString() ==
+                        "ACCEPTED"
+                    ? "مقبول"
+                    : ordersModel.data![index].acceptFromManagerStore
+                                .toString() ==
+                            "PENDING"
+                        ? "قيد الانتظار"
+                        : "مرفض"),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ordersModel.data![index].notes!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: defaultColor),
                     ),
-                  ),
-                  ConditionalBuilder(
-                      condition: ordersModel.data![index].acceptFromManagerStore
-                              .toString() ==
-                          "PENDING",
-                      builder: (context) {
-                        return SizedBox(
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Text(
+                      "عدد الطلبات : " +
+                          ordersModel.data![index].orderedProducts!.length
+                              .toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    myDivider(),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "وقت الطلب : " +
+                          changeDateFormat(
+                            ordersModel.data![index].dateOfOrder!,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    ),
+                    Text(
+                      "اسم الطالب : " +
+                          ordersModel.data![index].whoCreatedOrder.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    ),
+                    ConditionalBuilder(
+                        condition: ordersModel
+                                .data![index].acceptFromManagerStore
+                                .toString() ==
+                            "ACCEPTED",
+                        builder: (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    onAcceptClicked();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.green,
-                                    elevation: 3,
-                                  ),
-                                  child: const Text("قبول"),
-                                ),
+                              Text(
+                                "وقت القبول : " +
+                                    changeDateFormat(
+                                      ordersModel.data![index].dateOfOrder
+                                          .toString(),
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13, color: Colors.grey[600]),
                               ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    onRejectClicked();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                    elevation: 3,
-                                  ),
-                                  child: const Text("رفض"),
-                                ),
+                              Text(
+                                "امين المخزن : " +
+                                    ordersModel.data![index].whoAcceptOrder
+                                        .toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13, color: Colors.grey[600]),
                               ),
                             ],
-                          ),
-                        );
-                      },
-                      fallback: (context) {
-                        return Container();
-                      }),
-                ],
+                          );
+                        },
+                        fallback: (context) {
+                          return Container();
+                        }),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          onDetailClicked();
+                        },
+                        child: const Text("تفاصيل الطلب"),
+                      ),
+                    ),
+                    ConditionalBuilder(
+                        condition: ordersModel
+                                .data![index].acceptFromManagerStore
+                                .toString() ==
+                            "PENDING",
+                        builder: (context) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      onAcceptClicked();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.green,
+                                      elevation: 3,
+                                    ),
+                                    child: const Text("قبول"),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      onRejectClicked();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red,
+                                      elevation: 3,
+                                    ),
+                                    child: const Text("رفض"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        fallback: (context) {
+                          return Container();
+                        }),
+                  ],
+                ),
               ),
+            ],
+          ),
+        ]),
+      ]),
+    ),
+  );
+}
+
+Widget orderItemOrderData({
+  required List<OrderData> ordersModel,
+  required int index,
+  required Function onDetailClicked,
+  required Function onItemClicked,
+  required Function onAcceptClicked,
+  required Function onRejectClicked,
+  IconData icon = Icons.chair,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10), // <-
+      color: HexColor("CFCEDF"),
+// - Radius
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Wrap(children: <Widget>[
+        Stack(alignment: Alignment.topLeft, children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  backgroundColor: ordersModel[index]
+                              .acceptFromManagerStore
+                              .toString() ==
+                          "ACCEPTED"
+                      ? Colors.green
+                      : ordersModel[index].acceptFromManagerStore.toString() ==
+                              "PENDING"
+                          ? Colors.yellow
+                          : Colors.red,
+                  radius: 7,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(ordersModel[index].acceptFromManagerStore.toString() ==
+                        "ACCEPTED"
+                    ? "مقبول"
+                    : ordersModel[index].acceptFromManagerStore.toString() ==
+                            "PENDING"
+                        ? "فيد الانتظار"
+                        : "مرفض"),
+              ],
             ),
-          ],
-        ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ordersModel[index].notes!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: defaultColor),
+                    ),
+                    Text(
+                      "عدد الطلبات : " +
+                          ordersModel[index].orderedProducts!.length.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    myDivider(),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "وقت الطلب : " +
+                          changeDateFormat(
+                            ordersModel[index].dateOfOrder!,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    ),
+                    Text(
+                      "اسم الطالب : " +
+                          ordersModel[index].whoCreatedOrder.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    ),
+                    ConditionalBuilder(
+                        condition: ordersModel[index]
+                                .acceptFromManagerStore
+                                .toString() ==
+                            "ACCEPTED",
+                        builder: (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "وقت القبول : " +
+                                    changeDateFormat(
+                                      ordersModel[index].dateOfOrder.toString(),
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13, color: Colors.grey[600]),
+                              ),
+                              Text(
+                                "امين المخزن : " +
+                                    ordersModel[index]
+                                        .whoAcceptOrder
+                                        .toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13, color: Colors.grey[600]),
+                              ),
+                            ],
+                          );
+                        },
+                        fallback: (context) {
+                          return Container();
+                        }),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          onDetailClicked();
+                        },
+                        child: const Text("تفاصيل الطلب"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]),
       ]),
     ),
   );
@@ -1331,6 +1516,44 @@ Widget ordersScreen(OrdersModel? orderModel,
   );
 }
 
+Widget ordersScreenOrderData(List<OrderData>? orderModel,
+    {required Function onRefresh,
+    required RefreshController refreshController,
+    required UserProfileCubit cubit}) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+      child: SmartRefresher(
+        enablePullDown: true,
+        header: const WaterDropHeader(),
+        onRefresh: () {
+          onRefresh();
+        },
+        controller: refreshController,
+        child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return orderItemOrderData(
+                ordersModel: orderModel!,
+                index: index,
+                onDetailClicked: () {
+                  navigateTo(
+                      context, OrderDetailsScreen(orderModel[index].id ?? 0));
+                },
+                onItemClicked: () {},
+                onAcceptClicked: () {},
+                onRejectClicked: () {},
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 10);
+            },
+            itemCount: orderModel!.length),
+      ),
+    ),
+  );
+}
+
 Widget productsScreenWithBottomMenuAndAcceptButtonItem(List<ProductData>? list,
     {required Function onRefresh,
     required RefreshController refreshController,
@@ -1437,8 +1660,6 @@ Widget productsScreenWithBottomMenu(List<ProductData>? list,
   );
 }
 
-
-
 Widget itemDetailRowWithDivider(
     {required String title,
     required String value,
@@ -1495,7 +1716,9 @@ Widget itemDetailRow(
         child: Text(
           title,
           style: GoogleFonts.outfit(
-              textStyle: Theme.of(context).textTheme.bodyText1!,color: color,fontSize: textSize),
+              textStyle: Theme.of(context).textTheme.bodyText1!,
+              color: color,
+              fontSize: textSize),
         ),
       ),
       SizedBox(
@@ -1504,10 +1727,8 @@ Widget itemDetailRow(
       Text(
         value,
         style: GoogleFonts.outfit(
-          textStyle: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .copyWith(fontWeight: FontWeight.normal, fontSize: textSize ,color: color),
+          textStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+              fontWeight: FontWeight.normal, fontSize: textSize, color: color),
         ),
       ),
     ],

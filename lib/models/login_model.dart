@@ -1,3 +1,6 @@
+import 'package:hti_store/models/create_order_model.dart';
+import 'package:hti_store/models/orders_model.dart';
+
 class LoginModel {
   bool? status;
   String? message;
@@ -19,7 +22,7 @@ class LoginModel {
   String? roles;
   String? sections;
   String? branch;
-
+  List<OrderData>? orders;
 
   // named constructor
   UserData.fromJson(Map<String, dynamic> json) {
@@ -29,7 +32,12 @@ class LoginModel {
     roles = json['roles'];
     sections = json['sections'];
     branch = json['branch'];
+    if (json['orders'] != null) {
+      orders = <OrderData>[];
+      json['orders'].forEach((v) {
+        orders!.add(OrderData.fromJson(v));
+      });
+    }
   }
-
 
 }
