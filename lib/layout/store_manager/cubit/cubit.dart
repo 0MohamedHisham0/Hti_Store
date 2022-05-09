@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/layout/sections/cubit/states.dart';
+import 'package:hti_store/layout/store_manager/cubit/states.dart';
+import 'package:hti_store/modules/addtion_offcial/in_store_product/in_store_product.dart';
 import 'package:hti_store/modules/orders/orders_screen/orders_screen.dart';
 import 'package:hti_store/modules/super_admin/user_profile_screen/user_profile_screen.dart';
-import '../../../modules/orders/section_cart/section_cart_screen.dart';
-import '../../../modules/sections/in_store_product_section/in_store_product.dart';
 import '../../../shared/components/constants.dart';
 
-class SectionCubit extends Cubit<SectionStates> {
-  SectionCubit() : super(SectionInitialState());
+class StoreManagerCubit extends Cubit<StoreManagerStates> {
+  StoreManagerCubit() : super(StoreManagerInitialState());
 
-  static SectionCubit get(context) => BlocProvider.of(context);
+  static StoreManagerCubit get(context) => BlocProvider.of(context);
 
   int currentScreenIndex = 0;
 
   List<Widget> screens = [
-    const InStoreProductSectionScreen(),
-    const SectionCartScreen(),
+    const InStoreProductScreen(),
+    const OrderScreen(),
     UserProfile(true, userID ?? 0),
   ];
 
   List<String> titles = [
     'المخزن',
-    'ارسال الطلبات',
+    'الطلبات',
     'الملف الشخصي',
   ];
 
@@ -32,8 +31,8 @@ class SectionCubit extends Cubit<SectionStates> {
       label: "المخزن",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.upload_file),
-      label: "ارسال الطلبات",
+      icon: Icon(Icons.shopping_cart),
+      label: "الطلبات",
     ),
     const BottomNavigationBarItem(
       icon: Icon(Icons.person),

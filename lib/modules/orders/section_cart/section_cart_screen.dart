@@ -33,12 +33,7 @@ class SectionCartScreen extends StatelessWidget {
           var formKey = GlobalKey<FormState>();
 
           return Scaffold(
-              appBar: AppBar(
-                title: const Text(
-                  "تفاصيل الطلب",
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
+
               body: ConditionalBuilder(
                 condition: state is! SectionCartLoadingState,
                 builder: (BuildContext context) {
@@ -49,7 +44,6 @@ class SectionCartScreen extends StatelessWidget {
                         key: formKey,
                         child: Column(
                           children: [
-                            const Text('وصف الطلب'),
                             defaultFormField(
                               controller: controller,
                               type: TextInputType.text,
@@ -62,13 +56,8 @@ class SectionCartScreen extends StatelessWidget {
                               label: 'وصف الطلب',
                               prefix: (Icons.description),
                             ),
-
                             const SizedBox(
-                              height: 8,
-                            ),
-                            myDivider(),
-                            const SizedBox(
-                              height: 8,
+                              height: 20,
                             ),
                             const Text(
                               "الطلبات",
@@ -80,7 +69,8 @@ class SectionCartScreen extends StatelessWidget {
                             ListView.separated(
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
-                                itemBuilder: (context, index) => itemSmallProduct(
+                                itemBuilder: (context, index) =>
+                                    itemSmallProduct(
                                         cartList[index].count,
                                         cartList[index].productname,
                                         context, () {
@@ -89,6 +79,7 @@ class SectionCartScreen extends StatelessWidget {
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(height: 10),
                                 itemCount: cartList.length),
+
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: Text(
@@ -98,13 +89,17 @@ class SectionCartScreen extends StatelessWidget {
                                     fontSize: 13, color: Colors.grey),
                               ),
                             ),
-
+                            const SizedBox(
+                              height: 8,
+                            ),
                             ConditionalBuilder(
                               condition: state is! CreateOrderLoadingState,
                               builder: (context) => defaultButton(
                                 function: () {
-                                  if (cartList.isNotEmpty && formKey.currentState!.validate()) {
-                                    cubit.createOrder(controller.text, cartList);
+                                  if (cartList.isNotEmpty &&
+                                      formKey.currentState!.validate()) {
+                                    cubit.createOrder(
+                                        controller.text, cartList);
                                   }
                                 },
                                 text: "طلب الآن",

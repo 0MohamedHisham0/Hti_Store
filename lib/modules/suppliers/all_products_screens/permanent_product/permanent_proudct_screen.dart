@@ -71,7 +71,7 @@ class PermanentProductScreen extends StatelessWidget {
                         ),
                         errorWidgetWithRefresh(
                             onClicked: () {
-                              cubit.getConsumerProducts();
+                              cubit.getPermanentProducts();
                             },
                             text: "لا يوجد منتجات"),
                       ],

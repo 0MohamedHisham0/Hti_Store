@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hti_store/layout/sections/home_store_keeper.dart';
 import 'package:hti_store/layout/store_keeper/home_store_keeper.dart';
+import 'package:hti_store/layout/store_manager/home_store_manager.dart';
 import 'package:hti_store/layout/suppliers/home_suppliers/home_suppliers.dart';
 import 'package:hti_store/modules/login/login_screen.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
@@ -9,7 +10,6 @@ import 'package:intl/intl.dart';
 import '../../layout/addtion_offcial/home_addtion_offcial.dart';
 import '../../layout/super_admin/home_super_admin/home_super_admin.dart';
 import '../../models/create_order_model.dart';
-import '../../models/orders_model.dart';
 import 'components.dart';
 
 void navigateToHomeScreen(String role, BuildContext context) {
@@ -50,6 +50,12 @@ void navigateToHomeScreen(String role, BuildContext context) {
         const HomeSectionScreen(),
       );
       break;
+    case 'STOREMANAGER':
+      navigateAndFinish(
+        context,
+        const HomeStoreManagerScreen(),
+      );
+      break;
     default:
       navigateAndFinish(
         context,
@@ -71,7 +77,7 @@ Widget getHomeScreen(String role) {
     case 'STOREKEPPER':
       return const HomeStoreKeeperScreen();
     case 'STOREMANAGER':
-      return const HomeStoreKeeperScreen();
+      return const HomeStoreManagerScreen();
     case 'SECTION':
       return const HomeSectionScreen();
     default:
@@ -111,8 +117,6 @@ String? token;
 int? userID;
 
 List<OrderedProductsCreated> cartList = [];
-
-
 
 // enum RoleStates {
 //   ADMIN,

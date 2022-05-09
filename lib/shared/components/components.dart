@@ -483,7 +483,7 @@ Widget orderItem({
                         condition: ordersModel
                                 .data![index].acceptFromManagerStore
                                 .toString() ==
-                            "PENDING",
+                            "PENDING" && userRole == "STOREKEPPER",
                         builder: (context) {
                           return SizedBox(
                             width: double.infinity,
@@ -579,7 +579,7 @@ Widget orderItemOrderData({
                     ? "مقبول"
                     : ordersModel[index].acceptFromManagerStore.toString() ==
                             "PENDING"
-                        ? "فيد الانتظار"
+                        ? "قيد الانتظار"
                         : "مرفض"),
               ],
             ),
@@ -1777,11 +1777,11 @@ enum OrderStatus {
 String orderStatusToArabic(OrderStatus status) {
   switch (status) {
     case OrderStatus.ACCEPTED:
-      return "تم التأكيد";
+      return "الطلبات المقبولة";
     case OrderStatus.PENDING:
-      return "قيد الانتظار";
+      return "طلبات قيد الانتظار";
     case OrderStatus.NOTFOUND:
-      return "لم يتم العثور علي الطلب";
+      return "الطلبات الغير موجودة";
     default:
       return "";
   }
@@ -1790,11 +1790,11 @@ String orderStatusToArabic(OrderStatus status) {
 // translate string to order status
 OrderStatus orderStatusFromArabic(String status) {
   switch (status) {
-    case "تم التأكيد":
+    case "الطلبات المقبولة":
       return OrderStatus.ACCEPTED;
-    case "قيد الانتظار":
+    case "طلبات قيد الانتظار":
       return OrderStatus.PENDING;
-    case "لم يتم العثور علي الطلب":
+    case "الطلبات الغير موجودة":
       return OrderStatus.NOTFOUND;
     default:
       return OrderStatus.NOTFOUND;
@@ -1804,11 +1804,11 @@ OrderStatus orderStatusFromArabic(String status) {
 // translate string to order status
 String stringOrderStateFromArabic(String status) {
   switch (status) {
-    case "تم التأكيد":
+    case "الطلبات المقبولة":
       return "ACCEPTED";
-    case "قيد الانتظار":
+    case "طلبات قيد الانتظار":
       return "PENDING";
-    case "لم يتم العثور علي الطلب":
+    case "الطلبات الغير موجودة":
       return "NOTFOUND";
     default:
       return "NOTFOUND";

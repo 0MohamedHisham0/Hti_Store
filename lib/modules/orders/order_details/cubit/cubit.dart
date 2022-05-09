@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/models/delet_user_model.dart';
-import 'package:hti_store/models/login_model.dart';
+
 import 'package:hti_store/models/orders_model.dart';
 import 'package:hti_store/modules/orders/order_details/cubit/states.dart';
 import 'package:hti_store/shared/network/end_points.dart';
@@ -47,4 +46,5 @@ class OrderDetailsCubit extends Cubit<OrderDetailsStates> {
       emit(OrderDetailsErrorState("هناك مشكله في استلام البينات"));
     });
   }
+
 }

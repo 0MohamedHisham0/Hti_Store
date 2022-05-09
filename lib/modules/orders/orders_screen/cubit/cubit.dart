@@ -20,12 +20,12 @@ class OrdersCubit extends Cubit<OrdersStates> {
   OrdersModel? pendingOrderModel;
   OrdersModel? notFoundOrderModel;
 
-  String bottomMenuValue = 'تم التأكيد';
+  String bottomMenuValue = 'الطلبات المقبولة';
 
   List<String> bottomMenuList = [
-    "تم التأكيد",
-    "قيد الانتظار",
-    "لم يتم العثور علي الطلب",
+    "الطلبات المقبولة",
+    "طلبات قيد الانتظار",
+    "الطلبات الغير موجودة",
   ];
 
   void changeBottomMenuValue(String value) {

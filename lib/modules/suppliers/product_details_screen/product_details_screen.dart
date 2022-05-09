@@ -9,6 +9,7 @@ import 'package:hti_store/modules/suppliers/update_product/update_product.dart';
 
 import 'package:hti_store/shared/components/components.dart';
 
+import '../../../shared/components/constants.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
@@ -40,19 +41,21 @@ class ProductDetailsScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 25),
                 ),
                 actions: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      if (cubit.productModel != null) {
-                        navigateTo(
-                            context,
-                            UpdateProductScreen(
-                                productModel: cubit.productModel)).then((value) => {
-                          cubit.getProductByID(id),
-                        });
-                      }
-                    },
-                  ),
+                  if (userRole != "SECTION")
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        if (cubit.productModel != null) {
+                          navigateTo(
+                                  context,
+                                  UpdateProductScreen(
+                                      productModel: cubit.productModel))
+                              .then((value) => {
+                                    cubit.getProductByID(id),
+                                  });
+                        }
+                      },
+                    ),
                 ],
               ),
               body: ConditionalBuilder(
@@ -102,14 +105,15 @@ class ProductDetailsScreen extends StatelessWidget {
                   return ConditionalBuilder(
                       condition: state is ProductDetailsErrorState,
                       builder: (context) {
-                        return Center(child: errorWidget("لا يوجد معلومات لهذا المنتج حاليا"));
+                        return Center(
+                            child: errorWidget(
+                                "لا يوجد معلومات لهذا المنتج حاليا"));
                       },
                       fallback: (context) {
                         return shimmer();
                       });
                 },
               ));
-
         },
       ),
     );

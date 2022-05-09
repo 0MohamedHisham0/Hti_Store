@@ -1,5 +1,6 @@
-import 'package:hti_store/models/delet_user_model.dart';
-import 'package:hti_store/models/login_model.dart';
+
+import '../../../../models/delet_user_model.dart';
+import '../../../../models/login_model.dart';
 
 abstract class UserProfileStates {}
 

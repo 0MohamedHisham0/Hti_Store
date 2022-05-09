@@ -1,8 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:hti_store/models/orders_model.dart';
 import 'package:hti_store/modules/orders/orders_screen/cubit/cubit.dart';
 import 'package:hti_store/modules/orders/orders_screen/cubit/states.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

@@ -1,16 +1,14 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hti_store/layout/super_admin/home_super_admin/home_super_admin.dart';
-import 'package:hti_store/modules/super_admin/user_profile_screen/cubit/states.dart';
-
 import 'package:hti_store/shared/components/components.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../../shared/styles/colors.dart';
+
 import '../../orders/order_details/order_details_screen.dart';
 import 'cubit/cubit.dart';
+import 'cubit/states.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile(this.isBottomNav, this.id, {Key? key}) : super(key: key);
@@ -162,18 +160,20 @@ class UserProfile extends StatelessWidget {
                           ),
                           myDivider(),
 
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text("الطلبات", style: TextStyle(fontSize: 20)),
-                          const SizedBox(
-                            height: 10,
-                          ),
+
                           ConditionalBuilder(
                               condition: cubit.userData!.orders!.isNotEmpty,
                               builder: (context) {
                                 return Column(
                                   children: [
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Text("الطلبات", style: TextStyle(fontSize: 20)),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+
                                     ListView.separated(
                                         shrinkWrap: true,
                                         physics: const BouncingScrollPhysics(),

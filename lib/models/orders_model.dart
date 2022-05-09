@@ -47,7 +47,7 @@ class OrderData {
     if (json['orderedProducts'] != null) {
       orderedProducts = <OrderedProducts>[];
       json['orderedProducts'].forEach((v) {
-        orderedProducts!.add(new OrderedProducts.fromJson(v));
+        orderedProducts!.add(OrderedProducts.fromJson(v));
       });
     }
     branch = json['branch'];
