@@ -386,7 +386,7 @@ Widget orderItem({
                                 .toString() ==
                             "PENDING"
                         ? "قيد الانتظار"
-                        : "مرفض"),
+                        : "مرفوض"),
               ],
             ),
           ),
@@ -580,7 +580,7 @@ Widget orderItemOrderData({
                     : ordersModel[index].acceptFromManagerStore.toString() ==
                             "PENDING"
                         ? "قيد الانتظار"
-                        : "مرفض"),
+                        : "مرفوض"),
               ],
             ),
           ),

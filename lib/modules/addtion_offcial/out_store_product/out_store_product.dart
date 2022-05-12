@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hti_store/shared/components/constants.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../shared/components/components.dart';
@@ -21,6 +22,7 @@ class OutStoreProductScreen extends StatelessWidget {
         child: BlocConsumer<OutStoreCubit, OutStoreStates>(
             listener: (context, state) {
           var cubit = OutStoreCubit.get(context);
+
           if (state is OutStoreErrorState) {
             _refreshController.refreshCompleted();
 
@@ -28,6 +30,7 @@ class OutStoreProductScreen extends StatelessWidget {
               cubit.getProductsFromBottomMenuValue();
             });
           }
+
           if (state is OutStoreLoadingState) {
             widget = Center(
               child: shimmer(),
@@ -77,7 +80,9 @@ class OutStoreProductScreen extends StatelessWidget {
                         .data!
                         .isEmpty,
                     builder: (context) {
-                      showToast(text: "لا يوجد منتجات حاليا", state: ToastStates.WARNING);
+                      showToast(
+                          text: "لا يوجد منتجات حاليا",
+                          state: ToastStates.WARNING);
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -102,7 +107,10 @@ class OutStoreProductScreen extends StatelessWidget {
                     },
                     fallback: (context) {
                       return productsScreenWithBottomMenuAndAcceptButtonItem(
-                          cubit.getListOfProductsFromBottomMenuValue()!.data!.data,
+                          cubit
+                              .getListOfProductsFromBottomMenuValue()!
+                              .data!
+                              .data,
                           onRefresh: () {
                             cubit.getProductsFromBottomMenuValue();
                           },
@@ -132,9 +140,5 @@ class OutStoreProductScreen extends StatelessWidget {
               },
               fallback: (context) => widget ?? shimmer());
         }));
-
   }
-
-
 }
-

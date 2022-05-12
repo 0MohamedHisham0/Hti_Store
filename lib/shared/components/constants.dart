@@ -97,20 +97,16 @@ void signOut(BuildContext context) {
 }
 
 String changeDateFormat(String date) {
-  DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-  var inputDate = DateTime.parse(parseDate.toString());
-  var outputFormat = DateFormat('MM/dd/yyyy hh:mm a');
-  var outputDate = outputFormat.format(inputDate);
+  // DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+  // var inputDate = DateTime.parse(parseDate.toString());
+  // var outputFormat = DateFormat('MM/dd/yyyy hh:mm a');
+  // var outputDate = outputFormat.format(inputDate);
 
-  return outputDate.contains("AM")
-      ? outputDate.replaceAll("AM", "ص")
-      : outputDate.replaceAll("PM", "م");
+  return date.contains("AM")
+      ? date.replaceAll("AM", "ص")
+      : date.replaceAll("PM", "م");
 }
 
-// get corona data api
-String getCoronaDataApi() {
-  return "https://corona.lmao.ninja/v2/all";
-}
 
 String? userRole;
 String? token;

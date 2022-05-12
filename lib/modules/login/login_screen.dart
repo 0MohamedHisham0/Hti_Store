@@ -45,10 +45,11 @@ class LoginScreen extends StatelessWidget {
               state: ToastStates.ERROR,
             );
           }
+
+
         },
         builder: (context, state) {
           var cubit = LoginCubit.get(context);
-
           return Scaffold(
             appBar: AppBar(),
             body: Center(

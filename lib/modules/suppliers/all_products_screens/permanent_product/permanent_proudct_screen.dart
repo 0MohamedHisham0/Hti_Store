@@ -19,8 +19,8 @@ class PermanentProductScreen extends StatelessWidget {
       var cubit = AllProductsCubit.get(context);
 
       if (state is AllProductsErrorState) {
-        _refreshController.refreshCompleted();
 
+        _refreshController.refreshCompleted();
         widget = Center(
           child: Column(
             children: [
@@ -33,6 +33,7 @@ class PermanentProductScreen extends StatelessWidget {
             ],
           ),
         );
+
       }
 
       if (state is AllProductsLoadingState) {
@@ -91,4 +92,5 @@ class PermanentProductScreen extends StatelessWidget {
           fallback: (context) => widget ?? shimmer());
     });
   }
+
 }

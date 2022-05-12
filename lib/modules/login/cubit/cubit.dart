@@ -50,7 +50,6 @@ class LoginCubit extends Cubit<LoginStates> {
 
       if (value.statusCode == 400) {
         print("400");
-
         emit(LoginErrorState(loginModel.message.toString()));
       }
 

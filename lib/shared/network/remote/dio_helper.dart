@@ -41,6 +41,7 @@ class DioHelper {
       queryParameters: query,
     );
   }
+
   static Future<Response> getDataWithoutToken({
     required String url,
     Map<String, dynamic>? query,
@@ -117,7 +118,5 @@ class DioHelper {
       ),
     );
   }
-
-
 
 }

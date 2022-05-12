@@ -160,10 +160,9 @@ class OutStoreCubit extends Cubit<OutStoreStates> {
                   productModelReceived = ProductModel.fromJson(value.data),
                   if (productModelReceived!.status == true)
                     {
+                      getProductsFromBottomMenuValue(),
                       emit(OutStoreChangeProductSuccessState(
                           productModelReceived!)),
-                      getProductsFromBottomMenuValue(),
-
                     }
                   else
                     {
