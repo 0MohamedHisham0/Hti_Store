@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
 
       Timer(const Duration(seconds: 4), () {
-        navigateTo(context, widget);
+        navigateAndFinish(context, widget);
       });
 
       return  Scaffold(
