@@ -1247,6 +1247,7 @@ Widget dialog(
         MaterialButton(
           child: const Text("حسنا"),
           onPressed: () {
+
             onPressedDone();
           },
         ),
@@ -1677,7 +1678,6 @@ Widget itemDetailRowWithDivider(
       Row(
         children: [
           Container(
-            width: 100,
             child: Text(
               title,
               style: GoogleFonts.outfit(
@@ -1687,13 +1687,15 @@ Widget itemDetailRowWithDivider(
           SizedBox(
             width: width,
           ),
-          Text(
-            value,
-            style: GoogleFonts.outfit(
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+          Expanded(
+            child: Text(
+              value,
+              style: GoogleFonts.outfit(
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+              ),
             ),
           ),
         ],

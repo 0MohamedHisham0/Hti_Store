@@ -1,15 +1,17 @@
+import 'dart:io';
+
+import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hti_store/modules/login/login_screen.dart';
-import 'package:hti_store/modules/on_boarding/on_boarding_screen.dart';
-import 'package:hti_store/modules/orders/orders_screen/orders_screen.dart';
+
 import 'package:hti_store/modules/splash/splash_screen.dart';
 import 'package:hti_store/modules/suppliers/all_products_screens/cubit/cubit.dart';
 import 'package:hti_store/shared/bloc_observer.dart';
-import 'package:hti_store/shared/components/constants.dart';
 import 'package:hti_store/shared/network/local/cache_helper.dart';
 import 'package:hti_store/shared/network/remote/dio_helper.dart';
 import 'package:hti_store/shared/styles/themes.dart';
+import 'dart:io' show Platform;
 
 import 'modules/orders/orders_screen/cubit/cubit.dart';
 
@@ -30,11 +32,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final bool? isDark;
 
-   MyApp({
+  MyApp({
     this.isDark,
   });
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -43,10 +44,10 @@ class MyApp extends StatelessWidget {
             create: (context) => AllProductsCubit()
               ..getPermanentProducts()
               ..getConsumerProducts(),
-
           ),
           BlocProvider(
-            create: (context) => OrdersCubit()..getOrdersFromAPIWithBottomMenu(),
+            create: (context) =>
+                OrdersCubit()..getOrdersFromAPIWithBottomMenu(),
           ),
         ],
         child: MaterialApp(

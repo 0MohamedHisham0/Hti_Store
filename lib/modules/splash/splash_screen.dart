@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:hti_store/shared/components/components.dart';
-
 import '../../shared/components/constants.dart';
 import '../../shared/network/local/cache_helper.dart';
 import '../login/login_screen.dart';
