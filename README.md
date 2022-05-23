@@ -1,16 +1,12 @@
 # hti_store
 
-System for Store in hti institute
+System for Store in hti institute 
 
-## Getting Started
+BackEnd : https://github.com/saifhany/inventory-hti
 
-This project is a starting point for a Flutter application.
+View it on YouTube: https://youtu.be/bWqSZ-cG4Gc
 
-A few resources to get you started if this is your first Flutter project:
+User managments
+![image](https://user-images.githubusercontent.com/72823171/169897200-d9bcf22f-ff2c-4679-9c70-a207f436bf3e.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
